@@ -1,0 +1,24 @@
+
+☐ ☑
+
+☑			[GameObj1] 		Create basic GameObject structure - GO, Creatures
+☐			[Network1] 		Setup basic network model
+☐			[GameCore]		Setup basic game architecture		(basic frame of (logically connected) classes, that will make the game run)
+☐			[Movement] 		Basic movement, tickUpdates
+☐			[Network2] 		Make movement work over the network		--- From here, every step will be networked as well
+☐			[Physics] 			Get the collision system working
+☐			[Player] 			Basic player implementation (player= special Creature)
+☐			[Combat1]		Implement stage 1,2,3 of combat 
+☐			[AI]					Create basic AIController
+☐			[Resources] 		Replace all placeholder images and update all Resource loading methods
+	
+	
+	
+	
+	
+	
+	
+	Combat Stages:
+		1)		Only basic shooting
+		2)		Hack'n'Slash
+		3)		Simple abilities (Blink, Charge, that sort of stuff)
