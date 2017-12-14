@@ -5,7 +5,11 @@
  */
 package game;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javafx.animation.AnimationTimer;
+import network.client.ClientController;
+import network.NetID;
 
 /**
  * The lowest level of game updates. Hadles screen and view updates based
@@ -13,20 +17,30 @@ import javafx.animation.AnimationTimer;
  * @author Radek
  */
 public class GameLoop extends AnimationTimer {
-
+    
     @Override
     public void start() {
-        super.start(); //To change body of generated methods, choose Tools | Templates.
+        
+        //if(!initialized)
+        try {
+            new Thread(new ClientController(new NetID(InetAddress.getLocalHost(), 11111))).start();
+        } catch (UnknownHostException e) {
+            System.err.println("UnknownHostException");
+            e.printStackTrace();
+        }
+        
+        super.start();
+        System.out.println("Loop started");
     }
 
     @Override
     public void stop() {
-        super.stop(); //To change body of generated methods, choose Tools | Templates.
+        super.stop();
     }
 
     @Override
     public void handle(long now) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //System.out.println("Looping");
     }
     
     public GameLoop() {

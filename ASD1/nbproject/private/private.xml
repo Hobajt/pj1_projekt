@@ -3,18 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/Creature.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/data/GameObjectData.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/data/CreatureData.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/game/data/GameUpdateGenerator.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/GameObject.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/data/StatsData.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/Stats.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/game/GameLoop.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/networking/ServerController.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/collider/Collider.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/ObjectFlags.java</file>
-            <file>file:/C:/Radek/PRG/Java/Projekto/ASD1/src/gameobject/Direction.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/ConnectionAttempt.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/server/ServerController.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/client/ClientTransmitter.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/NetwTesting.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/DataPacket.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/server/ServerRegistrator.java</file>
+            <file>file:/C:/Radek/githubTets/prgPodruhe/ASD1/src/network/client/ClientController.java</file>
         </group>
     </open-files>
 </project-private>

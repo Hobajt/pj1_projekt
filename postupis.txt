@@ -1,20 +1,21 @@
 
 ☐ ☑
 
+__________ urgent _________
 ☑			[GameObj1] 		Create basic GameObject structure - GO, Creatures
-☐			[Network1] 		Setup basic network model
 ☐			[GameCore]		Setup basic game architecture		(basic frame of (logically connected) classes, that will make the game run)
 ☐			[Movement] 		Basic movement, tickUpdates
-☐			[Network2] 		Make movement work over the network		--- From here, every step will be networked as well
+☐			[TempGraph]		Draw primitive shapes for recognition, no image and resource loading
 ☐			[Physics] 			Get the collision system working
+☐			[Combat1]		Implement combat stage 1- simple shooting, maybe with cooldown
 ☐			[Player] 			Basic player implementation (player= special Creature)
-☐			[Combat1]		Implement stage 1,2,3 of combat 
 ☐			[AI]					Create basic AIController
 ☐			[Resources] 		Replace all placeholder images and update all Resource loading methods
-	
-	
-	
-	
+
+_________ bonus ___________
+☐			[Combat23]		Advanced Combat (not both stages necessarily)
+☐			[AIAdvanced]	AI Controls for new combat, maybe something even better
+☐			[Networking] 	Get networking to work, if possible- game core should be made so that it could be easily implemented
 	
 	
 	
