@@ -6,6 +6,9 @@
 package game;
 
 import game.data.ObjectManager;
+import gameobject.Creature;
+import gameobject.player.Player;
+import gameobject.player.PlayerInput;
 
 /**
  * Core computation- generates new positions and applies
@@ -21,5 +24,23 @@ public class GameUpdateGenerator {
      */
     public void updateTick(ObjectManager objManager, double delta) {
         //System.out.println("tick");
+        
+        updatePlayer();
+        
+        //System.out.println(Player.inst().getxAxis());
+        //System.out.println(Player.inst().getObject().getTransform().getPosition());
+    }
+    
+    
+    /**
+     * Updates local player
+     */
+    private void updatePlayer() {
+        Creature player= Player.inst().getObject();
+        PlayerInput pInput= Player.inst().getInput();
+        
+        player.move(pInput.getMoveVector());
+        player.getStateHandler().update(pInput);
+        player.rotate(pInput.getRotation());
     }
 }

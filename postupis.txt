@@ -4,12 +4,13 @@
 __________ urgent _________
 ☑			[GameObj1] 		Create basic GameObject structure - GO, Creatures
 ☑			[GameCore]		Setup basic game architecture, gameUpdate ticks		(basic frame of (logically connected) classes, that will make the game run)
-☐			[IngameView]	Ingame view implementation, camera movement and player centering
-☐			[Movement] 		Basic movement, tickUpdates
-☐			[TempGraph]		Draw primitive shapes for recognition, no image and resource loading
+☑			[IngameView]	Ingame view implementation, camera movement and player centering
+☑			[Input]				Input reading, and its integration into game
 ☐			[Physics] 			Get the collision system working
+☑			[Movement] 		Basic movement, tickUpdates
+☑			[TempGraph]		Draw primitive shapes for recognition, no image and resource loadin
 ☐			[Combat1]		Implement combat stage 1- simple shooting, maybe with cooldown
-☐			[Player] 			Basic player implementation (player= special Creature)
+☑			[Player] 			Basic player implementation (player= special Creature)
 ☐			[AI]					Create basic AIController
 ☐			[Resources] 		Replace all placeholder images and update all Resource loading methods
 

@@ -22,6 +22,8 @@ public class Const {
     public static final int BASE_HEIGHT= 480;
     public static final Color BACKGROUND= Color.BLACK;
     
+    public static final int SCREEN_FILTER_PERIOD= 20;
+    
     //TODO: [Resources] Rework button styles - add some factory and load from file 
     public static final String BUTTON1_S1= ""
             + " -fx-background-color: yellow;"

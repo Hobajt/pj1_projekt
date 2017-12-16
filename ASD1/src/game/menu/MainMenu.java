@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import main.Window;
 import main.Window.GroupType;
 import game.input.InputListenerCall;
+import main.FXApp;
 
 /**
  * Main menu - the initial menu that will popup on the start of the game
@@ -76,12 +77,14 @@ public class MainMenu implements Menu {
             Window.inst().getGroup(GroupType.MENU).getChildren().add(parent);
             InputManager.inst().addListener(l);
         }
+        FXApp.inst().resizeObserver().addListener(this);
     }
 
     @Override
     public void hide() {
         Window.inst().getCleanMenu();
         InputManager.inst().removeListener(l);
+        FXApp.inst().resizeObserver().removeListener(this);
     }
     
     /**

@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCode;
  * @author Radek
  * Input handling that acts as a trigger- signal is sent only on initial press.
  */
-public class Trigger extends InputHandler {
+class Trigger extends InputHandler {
 
     private boolean value, alreadySent;
     
@@ -34,6 +34,7 @@ public class Trigger extends InputHandler {
     @Override
     public void onPress(KeyCode c) {
         value= true;
+        
     }
 
     @Override

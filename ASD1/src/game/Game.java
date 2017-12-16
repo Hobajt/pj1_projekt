@@ -71,8 +71,8 @@ public abstract class Game {
             throw new GameException("Level loading error");
         }
         
-        this.gameLoop= new GameLoop(this);
         objManager= new ObjectManager(this, data);
+        this.gameLoop= new GameLoop(this);
     }
     
     public final GameLoop getGameLoop() {

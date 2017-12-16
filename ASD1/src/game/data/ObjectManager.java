@@ -7,13 +7,15 @@ package game.data;
 
 import game.Game;
 import gameobject.Creature;
-import gameobject.Direction;
+import util.Rotation;
 import gameobject.GameObject;
 import gameobject.ObjectFactory;
-import gameobject.Player;
-import gameobject.Transform;
+import gameobject.player.Player;
+import util.Transform;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javafx.geometry.Point2D;
 
 /**
@@ -57,7 +59,7 @@ public class ObjectManager {
      * @param rot Rotation
      * @return Returns the reference to created GameObject
      */
-    public GameObject instantiate(int gdID, Point2D pos, Direction rot) {
+    public GameObject instantiate(int gdID, Point2D pos, Rotation rot) {
         return instantiate(gdID, new Transform(pos, rot));
     }
     
@@ -97,16 +99,51 @@ public class ObjectManager {
     }
     
     /**
+     * Returns list of objects that are within certain distance from player
+     * @param radius Radius in pixels that limit the selection
+     * @return Returns list of gameobjects
+     */
+    public List<GameObject> getObjectsInRadius(int radius) {
+        
+        //filters and joins together both lists
+        return Stream.concat(
+                objStatic.stream().filter(go -> withinRadius(go, radius)),
+                objDynamic.stream().filter(go -> withinRadius(go, radius)))
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * Checks if given gameObject is in specified distance from player
+     * @param g Object to compare
+     * @param radius Maximum distance
+     * @return Returns true if Object is within the range
+     */
+    private boolean withinRadius(GameObject g, int radius) {
+        return player.getObject().distance(g) <= radius;
+    }
+    
+    /**
      * Constructor- Requires references
      * @param game Game controller reference (for uniqueID generation)
      * @param data Object Data reference
      */
     public ObjectManager(Game game, LevelData data) {
-        System.out.println("--ObjManager init--");
         this.game= game;
         this.data= data.getObjectData();
         objStatic= new ArrayList<>();
         objDynamic= new ArrayList<>();
         System.out.println("--ObjManager initialized--");
+    }
+
+    public List<GameObject> getObjDynamic() {
+        return objDynamic;
+    }
+
+    public List<GameObject> getObjStatic() {
+        return objStatic;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

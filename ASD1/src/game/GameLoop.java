@@ -5,8 +5,9 @@
  */
 package game;
 
-import game.data.ObjectManager;
+import game.view.GameView;
 import javafx.animation.AnimationTimer;
+import main.FXApp;
 
 /**
  * Most "physical" class. Generates periodic ticks that run the game
@@ -18,6 +19,7 @@ public class GameLoop extends AnimationTimer {
     private boolean initialized;
     
     private final Game data;
+    private final GameView view;
     
     private long lastTick;
     private double delta;
@@ -44,19 +46,18 @@ public class GameLoop extends AnimationTimer {
         
         data.nextTick(delta);
         
+        //System.out.println(frameRate);
+        
         lastTick= now;
     }
-    
-    /**
-     * Updates the game screen
-     * Called from higher level classes in response to nextTick() call
-     * @param objManager 
-     */
-    public void updateView(ObjectManager objManager) {
-        //System.out.println("view update");
+
+    public GameView getView() {
+        return view;
     }
     
     public GameLoop(Game data) {
         this.data= data;
+        this.view= new GameView();
+        FXApp.inst().resizeObserver().addListener(view);   //dont have to remove, will be receiving till the end
     }
 }

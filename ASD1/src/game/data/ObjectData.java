@@ -5,7 +5,7 @@
  */
 package game.data;
 
-import gameobject.Transform;
+import util.Transform;
 import gameobject.spawner.Spawner;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,19 +42,42 @@ class ObjectData {
         List<Transform> lst;
         
         //initialObjects
+        /*
         lst= new ArrayList<>();
-        lst.add(Transform.Origin());
-        initialObjects.put(0, lst);
-        lst= new ArrayList<>();
-        lst.add(Transform.Origin());
-        lst.add(Transform.Origin());
+        lst.add(new Transform(-50,60));
         initialObjects.put(1, lst);
         
         lst= new ArrayList<>();
-        lst.add(Transform.Origin());
-        lst.add(Transform.Origin());
-        lst.add(Transform.Origin());
-        initialObjects.put(0, lst);
+        lst.add(new Transform(100,-100));
+        initialObjects.put(2, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(-120,-150));
+        initialObjects.put(3, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(-120,-150));
+        initialObjects.put(1, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(-200,-150));
+        initialObjects.put(4, lst);*/
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(0,150));
+        initialObjects.put(5, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(200,150));
+        initialObjects.put(6, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(-150,150));
+        initialObjects.put(7, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(0,-150));
+        initialObjects.put(8, lst);
         
         //playerSpawn
         //lst= Arrays.asList(new Transform())
@@ -81,7 +104,7 @@ class ObjectData {
      */
     public Transform getRandomPlayerSpawn() {
         if(playerSpawn.size() < 1)
-            return Transform.Origin();
+            return new Transform();
         
         Random rd= new Random();
         return playerSpawn.get(rd.nextInt(playerSpawn.size()));

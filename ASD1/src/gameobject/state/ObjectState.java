@@ -1,0 +1,22 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gameobject.state;
+
+/**
+ * Specifies a state of GameObject - needed for animation
+ * @author Radek
+ */
+public enum ObjectState {
+    IDLE,
+    WALK,
+    RUN;
+    
+    private final long stateTime;
+
+    private ObjectState() {
+        stateTime= System.nanoTime();
+    }
+}

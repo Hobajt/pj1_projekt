@@ -31,7 +31,7 @@ public class GameOffline extends Game {
         gameUpdate.updateTick(getObjManager(), deltaSec);
         
         //update gameLoop
-        getGameLoop().updateView(getObjManager());
+        getGameLoop().getView().updateView(getObjManager());
     }
     
     /**

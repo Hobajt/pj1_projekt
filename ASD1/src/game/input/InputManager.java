@@ -5,27 +5,28 @@
  */
 package game.input;
 
-import game.input.handler.Button;
-import game.input.handler.Axis;
-import game.input.handler.Trigger;
 import game.input.handler.InputHandler;
 import util.Const;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import main.Window;
 
 /**
  *
  * @author Radek
- * Singleton class designed for input management
+ * Singleton class designed for input management.<br>
+ * Figures as a mediator between scene input events and outer classes.
+ * Allows two access modes.<br>
+ * 1- Direct access. Class registers a single listener, and receives notifications
+ * on any input event.
+ * 2- Handlers. Class can register handlers, that read from 1 or 2 keys only.
  */
 public class InputManager {
     
-    private final static Logger LOGGER = Const.setupLogger(InputManager.class);
     private final List<InputHandler> handlers;
     private final List<InputListenerCall> listeners;
     
@@ -43,9 +44,7 @@ public class InputManager {
         handlers= new ArrayList<>();
         listeners= new ArrayList<>();
         
-        handlers.add(new Trigger("xTrigger", KeyCode.D, KeyCode.A));
-        handlers.add(new Button("xButton", KeyCode.D, KeyCode.A));
-        handlers.add(new Axis("xAxis", KeyCode.D, KeyCode.A));
+        mapInputKeys();
     }
     //</editor-fold>
     
@@ -55,18 +54,40 @@ public class InputManager {
     public void logHandlerStates() {
         String out= String.format("%n___%n");
         out = handlers.stream().map((h) -> String.format("%s: %d%n", h.getName(), h.read())).reduce(out, String::concat);
-        LOGGER.log(Level.FINE, out);
     }
     
     
     /**
-     * Maps desired keys to events.
-     * This is called on new window creation.
-     * @param scene Scene object
+     * Adds new handler to the manager
+     * @param handler Handler to manipulate with
      */
-    public void mapInputKeys(Scene scene) {
-        scene.setOnKeyPressed((e) -> inputEvent(e, true));
-        scene.setOnKeyReleased((e) -> inputEvent(e, false));
+    public void addHandler(InputHandler handler) {
+        if(!handlers.contains(handler))
+            handlers.add(handler);
+    }
+    
+    /**
+     * Removes a handler from manager
+     * @param handler Handler to manipulate with
+     */
+    public void removeHandler(InputHandler handler) {
+        handlers.remove(handler);
+    }
+    
+    /**
+     * Adds listener to watch for possible inputs
+     * @param l <b>InputListenerCall</b> to add
+     */
+    public void addListener(InputListenerCall l) {
+        this.listeners.add(l);
+    }
+    
+    /**
+     * Removes listener from the list
+     * @param l <b>InputListenerCall</b> to remove
+     */
+    public void removeListener(InputListenerCall l) {
+        this.listeners.remove(l);
     }
     
     /**
@@ -75,11 +96,8 @@ public class InputManager {
      * @param pressed True if it was pressed
      */
     public void inputEvent(KeyEvent k, boolean pressed) {
-        
         updateHandlers(k.getCode(), pressed);
-        
         notifyListeners(k.getCode(), pressed);
-        
         //logHandlerStates();
     }
     
@@ -113,25 +131,18 @@ public class InputManager {
     }
     
     /**
-     * Removes listener from the list
-     * @param l <b>InputListenerCall</b> to remove
-     */
-    public void removeListener(InputListenerCall l) {
-        this.listeners.remove(l);
-    }
-    
-    /**
-     * Adds listener to watch for possible inputs
-     * @param l <b>InputListenerCall</b> to add
-     */
-    public void addListener(InputListenerCall l) {
-        this.listeners.add(l);
-    }
-    
-    /**
      * Removes all listeners
      */
     public void clearListeners() {
         this.listeners.clear();
+    }
+    
+    /**
+     * Maps desired keys to events.<br>
+     * This is called on new window creation.
+     */
+    private void mapInputKeys() {
+        Window.inst().getScene().setOnKeyPressed((e) -> inputEvent(e, true));
+        Window.inst().getScene().setOnKeyReleased((e) -> inputEvent(e, false));
     }
 }

@@ -7,11 +7,11 @@ package gameobject.data;
 
 import gameobject.data.flags.ObjectFlags;
 import gameobject.collider.Collider;
-import gameobject.model.Model;
 import gameobject.model.ModelFactory;
 import gameobject.data.behaviour.CustomBehaviour;
 import gameobject.data.flags.FlagsFactory;
 import gameobject.data.flags.FlagsType;
+import gameobject.model.Model;
 import java.io.Serializable;
 
 /**

@@ -14,7 +14,7 @@ import javafx.scene.input.KeyCode;
  */
 public abstract class InputHandler {
     
-    private String name;
+    private final String name;
     private KeyCode k, altK;
     
     /**
@@ -63,9 +63,14 @@ public abstract class InputHandler {
         return name;
     }
     
-    public InputHandler(String name, KeyCode k, KeyCode altK) {
+    InputHandler(String name, KeyCode k, KeyCode altK) {
         this.name= name;
         this.k = k;
         this.altK= altK;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("%s: %d", this.getName(), this.read());
     }
 }

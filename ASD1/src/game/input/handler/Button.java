@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCode;
  * @author Radek
  * Input handling that acts as a simple button- true on pressed.
  */
-public class Button extends InputHandler {
+class Button extends InputHandler {
     
     private boolean value;
     

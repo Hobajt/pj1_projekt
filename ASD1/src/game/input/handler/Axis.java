@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCode;
  * @author Radek
  * Input handling that acts as an axis- signal returns the value of the axis
  */
-public class Axis extends InputHandler {
+class Axis extends InputHandler {
     
     private int state;
     

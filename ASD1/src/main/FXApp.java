@@ -8,15 +8,16 @@ package main;
 import game.Game;
 import game.GameOffline;
 import game.GameException;
+import game.input.InputManager;
 import game.menu.MainMenu;
 import game.menu.Menu;
 import gameobject.data.ObjectDataFactory;
-import java.util.logging.Logger;
+import gameobject.model.ModelFactory;
+import gameobject.state.ObjectState;
+import java.util.Arrays;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.stage.Stage;
-import util.Const;
 
 /**
  * Class that manages FX Window startup (thus starting the whole game)
@@ -26,26 +27,30 @@ public class FXApp extends Application {
 
     private static FXApp instance;
     
-    private static final Logger LOGGER= Const.setupLogger(FXApp.class);
-    
-    private Window window;
     private Menu activeMenu;
     private Game game;
+    
+    private ResizeObserver onResize;
+    
+    private void TMP_saveAll() {
+        ObjectDataFactory.inst().SaveObjectData();
+        ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
+        ModelFactory.SaveModelStates("1", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
+    }
     
     @Override
     public void start(Stage primaryStage) throws Exception {
         
         //test obj saving
-        ObjectDataFactory.inst().testSave();
+//        TMP_saveAll();
         
         //<editor-fold defaultstate="collapsed" desc="Window initialization">
         instance= this;
-        window= Window.inst();
-        
-        addResizeListener(window);
+        onResize= new ResizeObserver(Window.inst().getScene());
+        InputManager.inst();
         
         primaryStage.setTitle("kek");
-        primaryStage.setScene(window.getScene());
+        primaryStage.setScene(Window.inst().getScene());
         primaryStage.show();
         //</editor-fold>
         
@@ -92,21 +97,9 @@ public class FXApp extends Application {
     public static void init(String[] args) {
         launch(args);
     }
-    
-    /**
-     * Creates new listener for scene size properties. 
-     * Called during setup
-     * @param w Window controller that contains the scene object
-     */
-    private void addResizeListener(Window w) {
-        ChangeListener<Number> resizeListener = (observable, oldValue, newValue) -> {
-            if(activeMenu != null)
-                activeMenu.onResize();
-            //LOG.info("Resizing");
-            //additional resize calls
-        };
-        w.getScene().heightProperty().addListener(resizeListener);
-        w.getScene().widthProperty().addListener(resizeListener);
+
+    public ResizeObserver resizeObserver() {
+        return onResize;
     }
     
     public static FXApp inst() {

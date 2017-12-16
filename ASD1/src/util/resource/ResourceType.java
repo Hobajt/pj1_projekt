@@ -11,6 +11,7 @@ package util.resource;
  */
 public enum ResourceType {
     OBJECT("data/objects/", ".dat"),
+    MODEL("images/models/", ".gif"),
     IMAGE("images/", ".png");
     
     private final String path;
@@ -29,7 +30,21 @@ public enum ResourceType {
         return path;
     }
     
+    /**
+     * Builds a path to a resource
+     * @param name Name of the file
+     * @return Returns string representation of path
+     */
     public String buildPath(String name) {
         return path + name + extension;
+    }
+    
+    /**
+     * Builds a path to a folder 
+     * @param name Folder name
+     * @return String representation of path
+     */
+    public String buildFolderPath(String name) {
+        return path + name;
     }
 }

@@ -5,6 +5,7 @@
  */
 package gameobject;
 
+import util.Transform;
 import gameobject.data.CreatureData;
 import gameobject.data.GameObjectData;
 import gameobject.data.ObjectDataFactory;
@@ -45,6 +46,7 @@ public class ObjectFactory {
         else
             g= new GameObject(uID, gd, tr);
         
+        System.out.format("-Obj::Create: (%d:%d)%n", id, uID);
         return g;
     }
 }

@@ -5,7 +5,9 @@
  */
 package gameobject;
 
+import util.Transform;
 import gameobject.data.CreatureData;
+import javafx.geometry.Point2D;
 
 /**
  * Instance of Advanced GameObject within the game
@@ -19,6 +21,15 @@ public class Creature extends GameObject {
         super(uID, data, transform);
         
         stats= new Stats(getData().getStatsData());
+    }
+
+    /**
+     * In addition to modifying position, applies this objects movementSpeed to it
+     * @param moveDir Direction of the move
+     */
+    @Override
+    public void move(Point2D moveDir) {
+        super.move(moveDir.normalize().multiply(getData().getStatsData().getMoveSpeed()));
     }
     
     @Override

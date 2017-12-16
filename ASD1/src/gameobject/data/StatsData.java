@@ -13,7 +13,22 @@ import java.io.Serializable;
  */
 public class StatsData implements Serializable {
     
+    //Stats might be alterable (dunno yet tho)
+    
     private int health;
     private float moveSpeed;
     //TODO: [Combat] Add CombatData here
+
+    public StatsData() {
+        this.health= 50;
+        this.moveSpeed= 2;
+    }
+    
+    public int getHealth() {
+        return health;
+    }
+
+    public float getMoveSpeed() {
+        return moveSpeed;
+    }
 }

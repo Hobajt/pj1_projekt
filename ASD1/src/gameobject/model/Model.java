@@ -5,53 +5,51 @@
  */
 package gameobject.model;
 
-import gameobject.Direction;
-import java.util.List;
-import java.util.Map;
+import gameobject.state.ObjectState;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import util.Rotation;
+import util.resource.ResourceType;
+import util.resource.Resources;
 
 /**
- * Set of images, that represent GameObject on screen (as an animation)
+ * Graphical representation of GameObject on screen.
  * @author Radek
  */
-public class Model {
-    //TODO: [Resources] Update class Model
+public abstract class Model {
     
-    private final Map<Direction,List<Image>> imgs;
+    public static final Image IMAGE_MISSING= imageMissingLoad();
     
-    /**
-     * Takes images mapped to direction, each direction has n images (n = state count)
-     * @param imgs 
-     */
-    Model(Map<Direction, List<Image>> byDirection) {
-        
-        
-        //TODO: ATTEMPT TO BUILD AND RUN JAR TO CHECK IF RESOURCE LOADING WORKS CORRECTLY
-        
-        
-        
-        this.imgs= byDirection;
+    private final boolean valid;
+    private final Point2D sizeOffset;
+
+    public abstract Image getImage();
+    public abstract Image getImage(ObjectState state, Rotation rot);
+    
+    public Model() {
+        this.valid = false;
+        this.sizeOffset = new Point2D(IMAGE_MISSING.getWidth(), IMAGE_MISSING.getHeight());
+    }
+
+    public Model(boolean valid, Point2D sizeOffset) {
+        this.valid = valid;
+        this.sizeOffset = sizeOffset;
+    }
+
+    public Point2D getSizeOffset() {
+        return sizeOffset;
     }
     
-//    /**
-//     * Takes images mapped by a state (each state has image in every direction)
-//     * @param imgs 
-//     */
-//    Model(Map<Integer, List<Image>> byState) {
-//        
-//        this.imgs= new HashMap<>();
-//        for(List<Image> inDir : byState.values()) {
-//            
-//        }
-//    }
-    
     /**
-     * Get image for a given state in direction
-     * @param state State which you want to retrieve
-     * @param rot Rotation of the image
-     * @return Image
+     * Initializes static final empty image
+     * @return 
      */
-    public Image getImage(int state, Direction rot) {
-        return imgs.get(rot).get(state);
+    private static Image imageMissingLoad() {
+        try{ 
+            return new Image(Resources.openStream(ResourceType.IMAGE, "none"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Image("none");
+        }
     }
 }

@@ -6,17 +6,13 @@
 package game.menu;
 
 import javafx.scene.input.KeyCode;
+import main.Resizable;
 
 /**
  * Basic menu interface.
  * @author Radek
  */
-public interface Menu {
-    
-    /**
-     * Defines how should menu behave during screen scaling
-     */
-    void onResize();
+public interface Menu extends Resizable {
     
     /**
      * Listener method that gets called after key press. Used to

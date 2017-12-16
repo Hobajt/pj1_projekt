@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -18,15 +17,13 @@ import java.nio.file.Paths;
  */
 public class Resources {
     
-    
-    
     /**
      * Attempts to open a stream at given location in resources
      * @param fullPath Full path to the resource (including folders within and file extension)
      * @return Returns InputStream or null if path is invalid
      */
     public static InputStream openStream(String fullPath) {
-        return Resources.class.getResourceAsStream(fullPath);
+        return Resources.class.getClassLoader().getResourceAsStream(fullPath);
     }
     
     /**
@@ -36,7 +33,7 @@ public class Resources {
      * @return Returns InputStream or null if nothing is found
      */
     public static InputStream openStream(ResourceType type, String id) {
-        return Resources.class.getResourceAsStream(type.buildPath(id));
+        return Resources.class.getClassLoader().getResourceAsStream(type.buildPath(id));
     }
     
     /**
@@ -57,28 +54,13 @@ public class Resources {
         return s;
     }
     
-    /**
-     * Path to selected Resources
-     * @param type Type of searched resources
-     * @param id Specific resource ID
-     * @return Returns String representation of file path (within resources)
-     */
-    public static String pathTo(ResourceType type, String id) {
-        return "";
-    }
-    
-    public static String pathToDefault(ResourceType type) {
-        return "";
+    public static OutputStream save(String fullpath) throws IOException {
+        System.err.println("SAVING DATA");
+        return Files.newOutputStream(Paths.get("res/" + fullpath));
     }
     
     public static OutputStream save(ResourceType type, String id) throws IOException {
-        
-        String path = "res/" + type.getPath() + id + type.getExtension();
-        Path p= Paths.get(path);
-        /*
-        if(!Files.exists(p)) {
-            Files.createFile(p);        //neni treba, pri newOutputStream se automaticky vytvori soubor
-        }*/
-        return Files.newOutputStream(p);
+        String path= type.buildPath(id);
+        return save(path);
     }
 }

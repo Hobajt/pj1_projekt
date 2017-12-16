@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobject;
+package gameobject.player;
+
+import gameobject.Creature;
 
 /**
  * Gameobject representing player + some additional player setup
@@ -11,14 +13,23 @@ package gameobject;
  */
 public class Player {
 
+    //<editor-fold defaultstate="collapsed" desc="Singleton- inst(), cons()">
     private static Player instance;
-    
-    private final Creature playerObject;
     
     public Player(Creature c) {
         this.playerObject= c;
+        this.input= PlayerInput.inst();
+        
         overridePlayer();
     }
+    
+    public static Player inst() {
+        return instance;
+    }
+    //</editor-fold>
+    
+    private final Creature playerObject;
+    private final PlayerInput input;
     
     /**
      * Moves any dependencies from old playerObject to new one (listeners,...)
@@ -29,12 +40,12 @@ public class Player {
         }
         instance= this;
     }
-    
-    public static Player getPlayer() {
-        return instance;
+
+    public Creature getObject() {
+        return playerObject;
     }
 
-    public Creature getPlayerObject() {
-        return playerObject;
+    public PlayerInput getInput() {
+        return input;
     }
 }

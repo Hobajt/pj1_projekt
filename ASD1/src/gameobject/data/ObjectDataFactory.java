@@ -5,7 +5,6 @@
  */
 package gameobject.data;
 
-import gameobject.data.flags.FlagsFactory;
 import gameobject.data.flags.FlagsType;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,12 +36,17 @@ public class ObjectDataFactory {
     
     private final Map<Integer, GameObjectData> cache;
     
+    public void drop() {
+        cache.clear();
+    }
+    
     /**
      * Loads GameObject from data and stores it into cache
      * @param id Id of the gameObject
      * @return Returns the loaded gameObjectData
      */
     private GameObjectData loadData(int id) {
+        System.out.format("  -ObjData::Load: (%d)%n", id);
         
         GameObjectData gd= null;
         try (ObjectInputStream load= new ObjectInputStream(
@@ -56,19 +60,21 @@ public class ObjectDataFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.format("  -loaded: (%d)%n", id);
         return gd;
     }
     
     /**
      * Get GameObjectData from cache or from file, based on given ID
-     * @param ID Identifier of gameObject
+     * @param id Identifier of gameObject
      * @return Returns GameObject with given ID
      */
-    public GameObjectData getData(int ID) {
-        if(cache.containsKey(ID))
-            return cache.get(ID);
+    public GameObjectData getData(int id) {
+        System.out.format("-ObjData::Get: (%d)%n", id);
+        if(cache.containsKey(id))
+            return cache.get(id);
         
-        return loadData(ID);
+        return loadData(id);
     }
     
     
@@ -89,13 +95,32 @@ public class ObjectDataFactory {
         }
     }
     
-    public void testSave() {
+    /**
+     * <b>TEMPORARY METHOD</b>
+     * Saves GameObjectData into .dat files
+     */
+    public void SaveObjectData() {
         
-        CreatureData cd= new CreatureData(420, "testCr", FlagsType.CREATURE, 3, null, null, null);
-        GameObjectData gd= new GameObjectData(69, "testGo", FlagsType.STATIC, 0, null, null);
+        CreatureData pl= new CreatureData(0, "PlayerObject", FlagsType.CREATURE, 0, null, null, new StatsData());
+        CreatureData cr1= new CreatureData(1, "Creature", FlagsType.CREATURE, 0, null, null, new StatsData());
+        CreatureData cr2= new CreatureData(2, "Creature2", FlagsType.CREATURE, 1, null, null, new StatsData());
+        GameObjectData go1= new GameObjectData(3, "Tile1", FlagsType.STATIC, 2, null, null);
+        GameObjectData go2= new GameObjectData(4, "Tile2", FlagsType.STATIC, 3, null, null);
+        GameObjectData go3= new GameObjectData(5, "Tile2", FlagsType.STATIC, 4, null, null);
+        GameObjectData go4= new GameObjectData(6, "Tile2", FlagsType.STATIC, 5, null, null);
+        GameObjectData go5= new GameObjectData(7, "Tile2", FlagsType.STATIC, 6, null, null);
+        GameObjectData go6= new GameObjectData(8, "Tile2", FlagsType.STATIC, 7, null, null);
         
-        saveData(cd);
-        saveData(gd);
+        saveData(pl);
+        saveData(cr1);
+        saveData(cr2);
+        saveData(go1);
+        saveData(go2);
+        saveData(go3);
+        saveData(go4);
+        saveData(go5);
+        saveData(go6);
+        
         System.out.println("saved");
     }
 }
