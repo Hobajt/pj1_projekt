@@ -13,12 +13,16 @@ import gameobject.data.CreatureData;
  */
 public class Creature extends GameObject {
     
-    private Stats stats;
+    private final Stats stats;
     
-    
+    Creature(int uID, CreatureData data, Transform transform) {
+        super(uID, data, transform);
+        
+        stats= new Stats(getData().getStatsData());
+    }
     
     @Override
-    public CreatureData getData() {
+    public final CreatureData getData() {
         return (CreatureData) super.getData();
     }
 }

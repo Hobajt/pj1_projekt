@@ -5,7 +5,7 @@
  */
 package main;
 
-import game.input.PlayerInput;
+import game.input.InputManager;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class Window {
         );
         
         scene= new Scene(groups.get(GroupType.ROOT), Const.BASE_WIDTH, Const.BASE_HEIGHT, Const.BACKGROUND);
-        PlayerInput.inst().mapInputKeys(scene);
+        InputManager.inst().mapInputKeys(scene);
     }
     
     public static Window inst() {

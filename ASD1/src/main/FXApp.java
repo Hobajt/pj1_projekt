@@ -5,9 +5,12 @@
  */
 package main;
 
-import game.GameLoop;
+import game.Game;
+import game.GameOffline;
+import game.GameException;
 import game.menu.MainMenu;
 import game.menu.Menu;
+import gameobject.data.ObjectDataFactory;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -27,10 +30,13 @@ public class FXApp extends Application {
     
     private Window window;
     private Menu activeMenu;
-    private GameLoop game;
+    private Game game;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
+        
+        //test obj saving
+        ObjectDataFactory.inst().testSave();
         
         //<editor-fold defaultstate="collapsed" desc="Window initialization">
         instance= this;
@@ -51,26 +57,31 @@ public class FXApp extends Application {
      */
     public void reset() {
         //cleanup variables and old references (if there are any)
-        game= new GameLoop();
+        game= null;
         
         //create and show main menu (Play, Quit- later mb even options)
-        activeMenu= new MainMenu(this::startGame, this::quit);
+        activeMenu= new MainMenu(this::startGameOffline, this::quit);
         activeMenu.show();
     }
     
     /**
      * Menu response call that starts the game
      */
-    private void startGame() {
+    private void startGameOffline() {
         activeMenu.hide();
-        game.start();
+        try {
+            game= new GameOffline(null);
+        } catch (GameException e) {
+            System.err.println("Game could not be started- " + e.getMessage());
+            reset();
+        }
     }
     
     /**
      * Terminates this application
      */
     public void quit() {
-        LOGGER.info("--Application terminated--");
+        System.out.println("--Application terminated--");
         Platform.exit();
     }
     

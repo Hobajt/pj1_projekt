@@ -6,7 +6,7 @@
 package gameobject;
 
 /**
- *
+ * Serves as rotation description (double representation is not needed)
  * @author Radek
  */
 public enum Direction {

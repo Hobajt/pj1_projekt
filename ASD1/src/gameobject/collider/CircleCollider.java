@@ -5,15 +5,19 @@
  */
 package gameobject.collider;
 
-import java.io.Serializable;
-
 /**
- * Description of "physical" represeentation of GameObject in game
+ *
  * @author Radek
  */
-public interface Collider extends Serializable {
+public class CircleCollider implements Collider {
     
-    //TODO: [Collisions] Impement some colliders
+    private boolean trigger;
+    private int radius;
+
+    @Override
+    public boolean isTrigger() {
+        return trigger;
+    }
     
-    public boolean isTrigger();
+    
 }

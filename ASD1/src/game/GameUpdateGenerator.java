@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.data;
+package game;
+
+import game.data.ObjectManager;
 
 /**
  * Core computation- generates new positions and applies
@@ -12,4 +14,12 @@ package game.data;
  */
 public class GameUpdateGenerator {
     
+    /**
+     * Updates the game
+     * @param objManager 
+     * @param delta Delta time- time difference from last update
+     */
+    public void updateTick(ObjectManager objManager, double delta) {
+        //System.out.println("tick");
+    }
 }

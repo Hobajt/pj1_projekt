@@ -14,6 +14,11 @@ import gameobject.data.StatsData;
 public class Stats {
     
     private int currHealth;
+    //TODO: [Combat] Add Combat stats here (aka combat timers, cooldowns,...)
     
-    private StatsData data;
+    private final StatsData data;
+    
+    public Stats(StatsData data) {
+        this.data= data;
+    }
 }

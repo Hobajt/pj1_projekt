@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.input;
-
-import javafx.scene.input.KeyCode;
+package gameobject.data.flags;
 
 /**
- * Interface for input listening
+ * Enum used to map flags to vairous types of GameObjects
  * @author Radek
  */
-public interface InputListener {
-    void keyAction(KeyCode c, boolean pressed);
+public enum FlagsType {
+    STATIC,
+    CREATURE;
+    //TODO: [Flags] add some more
 }

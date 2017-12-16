@@ -5,45 +5,58 @@
  */
 package game;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import game.data.ObjectManager;
 import javafx.animation.AnimationTimer;
-import network.client.ClientController;
-import network.NetID;
 
 /**
- * The lowest level of game updates. Hadles screen and view updates based
- * on served updates from GameData
+ * Most "physical" class. Generates periodic ticks that run the game
+ * and handles screen updates.
  * @author Radek
  */
 public class GameLoop extends AnimationTimer {
     
+    private boolean initialized;
+    
+    private final Game data;
+    
+    private long lastTick;
+    private double delta;
+    private int frameRate;
+    
     @Override
     public void start() {
         
-        //if(!initialized)
-        try {
-            new Thread(new ClientController(new NetID(InetAddress.getLocalHost(), 11111))).start();
-        } catch (UnknownHostException e) {
-            System.err.println("UnknownHostException");
-            e.printStackTrace();
-        }
-        
         super.start();
-        System.out.println("Loop started");
+        lastTick= System.nanoTime();
+        System.out.println("--Game started--");
     }
 
     @Override
     public void stop() {
         super.stop();
-    }
-
-    @Override
-    public void handle(long now) {
-        //System.out.println("Looping");
+        System.out.println("--Game stopped--");
     }
     
-    public GameLoop() {
+    @Override
+    public void handle(long now) {
+        delta= ((now - lastTick)*1e-9);
+        frameRate= (int) (1/delta);
         
+        data.nextTick(delta);
+        
+        lastTick= now;
+    }
+    
+    /**
+     * Updates the game screen
+     * Called from higher level classes in response to nextTick() call
+     * @param objManager 
+     */
+    public void updateView(ObjectManager objManager) {
+        //System.out.println("view update");
+    }
+    
+    public GameLoop(Game data) {
+        this.data= data;
     }
 }

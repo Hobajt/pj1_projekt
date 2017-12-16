@@ -23,23 +23,23 @@ import javafx.scene.input.KeyEvent;
  * @author Radek
  * Singleton class designed for input management
  */
-public class PlayerInput {
+public class InputManager {
     
-    private final static Logger LOGGER = Const.setupLogger(PlayerInput.class);
+    private final static Logger LOGGER = Const.setupLogger(InputManager.class);
     private final List<InputHandler> handlers;
-    private final List<InputListener> listeners;
+    private final List<InputListenerCall> listeners;
     
     // <editor-fold defaultstate="collapsed" desc="Singleton- inst(), cons()">
-    private static PlayerInput instance;
+    private static InputManager instance;
     
-    public static PlayerInput inst() {
+    public static InputManager inst() {
         if(instance == null) {
-            instance= new PlayerInput();
+            instance= new InputManager();
         }
         return instance;
     }
     
-    private PlayerInput() {
+    private InputManager() {
         handlers= new ArrayList<>();
         listeners= new ArrayList<>();
         
@@ -114,17 +114,17 @@ public class PlayerInput {
     
     /**
      * Removes listener from the list
-     * @param l <b>InputListener</b> to remove
+     * @param l <b>InputListenerCall</b> to remove
      */
-    public void removeListener(InputListener l) {
+    public void removeListener(InputListenerCall l) {
         this.listeners.remove(l);
     }
     
     /**
      * Adds listener to watch for possible inputs
-     * @param l <b>InputListener</b> to add
+     * @param l <b>InputListenerCall</b> to add
      */
-    public void addListener(InputListener l) {
+    public void addListener(InputListenerCall l) {
         this.listeners.add(l);
     }
     

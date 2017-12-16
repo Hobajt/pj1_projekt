@@ -6,15 +6,14 @@
 package game.menu;
 
 import util.Const;
-import game.input.InputListener;
-import game.input.PlayerInput;
+import game.input.InputManager;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
-import main.FXApp;
 import main.Window;
 import main.Window.GroupType;
+import game.input.InputListenerCall;
 
 /**
  * Main menu - the initial menu that will popup on the start of the game
@@ -24,7 +23,7 @@ public class MainMenu implements Menu {
     
     private final Group parent;                 //root element of this menu
     private final List<MenuButton> buttons;     //buttons present in this menu
-    private final InputListener l;              //listener for hotkeys implementation
+    private final InputListenerCall l;              //listener for hotkeys implementation
 
     private MenuButton innerState;              //state for cursor position
     
@@ -39,12 +38,16 @@ public class MainMenu implements Menu {
     }
 
     /**
-     * Called in PlayerInput when any key is pressed
+     * Called in InputManager when any key is pressed
      * @param c KeyCode of the key
      * @param pressed True- it has been pressed (false- released)
      */
     @Override
-    public void listenerMethod(KeyCode c, boolean pressed) {
+    public void listenerNotification(KeyCode c, boolean pressed) {
+        
+        //take action only on release (cuz press can send multiple signals)
+        if(pressed)
+            return;
         
         switch(c) {
             case W:
@@ -71,14 +74,14 @@ public class MainMenu implements Menu {
     public void show() {
         if(!Window.inst().getGroup(GroupType.MENU).getChildren().contains(parent)) {
             Window.inst().getGroup(GroupType.MENU).getChildren().add(parent);
-            PlayerInput.inst().addListener(l);
+            InputManager.inst().addListener(l);
         }
     }
 
     @Override
     public void hide() {
         Window.inst().getCleanMenu();
-        PlayerInput.inst().removeListener(l);
+        InputManager.inst().removeListener(l);
     }
     
     /**
@@ -103,7 +106,7 @@ public class MainMenu implements Menu {
         
         innerState= buttons.get(0);
         updateStyles();
-        l= this::listenerMethod;
+        l= this::listenerNotification;
     }
     
     /**

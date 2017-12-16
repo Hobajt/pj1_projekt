@@ -5,12 +5,15 @@
  */
 package gameobject.data;
 
+import java.io.Serializable;
+
 /**
  * Data class that describes creatures stat values
  * @author Radek
  */
-public class StatsData {
+public class StatsData implements Serializable {
     
     private int health;
     private float moveSpeed;
+    //TODO: [Combat] Add CombatData here
 }

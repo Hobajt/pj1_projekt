@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobject;
+package game.input;
+
+import javafx.scene.input.KeyCode;
 
 /**
- * Set of images, that represent GameObject on screen (as an animation)
+ * Interface for input listening
  * @author Radek
  */
-public class Model {
-    //TODO: [Resources] Update class Model
+public interface InputListenerCall {
+    void keyAction(KeyCode c, boolean pressed);
 }

@@ -6,7 +6,6 @@
 package gameobject;
 
 import gameobject.data.GameObjectData;
-import javafx.geometry.Point2D;
 
 /**
  * Instance of GameObject within the game
@@ -14,14 +13,19 @@ import javafx.geometry.Point2D;
  */
 public class GameObject {
     
-    private int uniqueID;
+    private final int uniqueID;
     
-    private Point2D position;
-    private Direction rotation;
+    private final Transform transform;
+    private final GameObjectData data;
+    
     //TODO: [] Possibly replace int state with class of State
     private int state;
     
-    private GameObjectData data;
+    GameObject(int uID, GameObjectData data, Transform transform) {
+        this.uniqueID= uID;
+        this.data= data;
+        this.transform= transform;
+    }
     
     public GameObjectData getData() {
         return data;

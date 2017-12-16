@@ -3,15 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobject;
+package gameobject.collider;
 
 /**
- * Describes how can the object be interacted with
+ *
  * @author Radek
  */
-public class ObjectFlags {
+public class RectCollider implements Collider {
     
-    private boolean dynamic;
-    private boolean damagable;
-    private boolean interactable;
+    private boolean trigger;
+    private int x,y;
+
+    @Override
+    public boolean isTrigger() {
+        return trigger;
+    }
+    
 }

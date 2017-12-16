@@ -18,22 +18,21 @@ public interface Menu {
      */
     void onResize();
     
-    
     /**
-     * When passed into PlayerInput, it listens to any key actions
-     * Usable for custom hot-keys and arrow key controls
+     * Listener method that gets called after key press. Used to
+     * implement key-controlled menu
      * @param c KeyCode of the given key
      * @param pressed Pressed or released?
      */
-    void listenerMethod(KeyCode c, boolean pressed);
+    void listenerNotification(KeyCode c, boolean pressed);
     
     /**
-     * Method that shows this menu
+     * Shows menu and enables its control
      */
     void show();
     
     /**
-     * Method that hides this menu
+     * Hides menu graphics and disables it
      */
     void hide();
 }
