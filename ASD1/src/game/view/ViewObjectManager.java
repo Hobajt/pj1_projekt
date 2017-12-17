@@ -28,7 +28,7 @@ class ViewObjectManager {
     private ScreenObject player;
     
     private final Map<Integer, ScreenObject> imgs;
-
+    
     private final Group front;
     private final Group stat;
     private final Group back;
@@ -54,6 +54,12 @@ class ViewObjectManager {
         
         updatePlayer();
         
+        //every Nth frame, filter out old ScreenObjects that are no longer relevant
+        if(++tickCounter > Const.T_SCREEN_FILTER) {
+            dropRedundantObjects();
+            tickCounter= 0;
+        }
+        
         for(GameObject g : objs) {
             
             ScreenObject s= imgs.get(g.getUniqueID());
@@ -73,12 +79,6 @@ class ViewObjectManager {
             
             //update animation
             s.setImage(g.getState(), g.getTransform().getRotation());
-        }     
-
-        //every Nth frame, filter out old ScreenObjects that are no longer relevant
-        if(++tickCounter > Const.SCREEN_FILTER_PERIOD) {
-            dropRedundantObjects();
-            tickCounter= 0;
         }
         
         return player.getGameObject().getTransform().getPosition();

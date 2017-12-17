@@ -33,8 +33,8 @@ public class FXApp extends Application {
     private ResizeObserver onResize;
     
     private void TMP_saveAll() {
-        ObjectDataFactory.inst().SaveObjectData();
-        ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
+        ObjectDataFactory.inst().SaveDataBulk();
+        ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN, ObjectState.MELEE, ObjectState.RANGED));
         ModelFactory.SaveModelStates("1", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
     }
     
@@ -42,7 +42,7 @@ public class FXApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         
         //test obj saving
-//        TMP_saveAll();
+        //TMP_saveAll();
         
         //<editor-fold defaultstate="collapsed" desc="Window initialization">
         instance= this;

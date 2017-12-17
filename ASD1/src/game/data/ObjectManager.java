@@ -15,7 +15,6 @@ import util.Transform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.geometry.Point2D;
 
 /**
@@ -24,13 +23,17 @@ import javafx.geometry.Point2D;
  */
 public class ObjectManager {
     
-    private final Game game;
-    private final ObjectData data;
+    private final Game game;            //game controller instance
+    private final ObjectData data;      //this level's object data
+    private final CollisionHandler col;   //Collision handler
     
-    private final List<GameObject> objStatic;
-    private final List<GameObject> objDynamic;
+    private final List<GameObject> objs;
     
     private Player player;
+    
+    public void updateCollisions() {
+        col.updateCollisions(objs);
+    }
     
     /**
      * Creates new dynamic GameObject at the selected location on the level
@@ -48,7 +51,7 @@ public class ObjectManager {
             return null;
         
         //add to list
-        objDynamic.add(gob);
+        objs.add(gob);
         return gob;
     }
     
@@ -76,7 +79,9 @@ public class ObjectManager {
      */
     public void serverReset(List<Integer> uIDs) {
         int n= 0;
-        objDynamic.clear();
+        int sCounter= 0, dCounter= 0;
+        
+        objs.clear();
         
         //local players uID will always be 0, Creature ID might be set in some const value
         
@@ -88,14 +93,16 @@ public class ObjectManager {
             for(Transform t : data.getInitialObjects().get(id)) {
                 GameObject g= ObjectFactory.inst().createNew(uIDs.get(n++), id, t);
                 
+                objs.add(g);
+                
                 if(g.getData().getFlags().isDynamic())
-                    objDynamic.add(g);
+                    dCounter++;
                 else
-                    objStatic.add(g);
+                    sCounter++;
             }
         }
         
-        System.out.format("--ObjManager reloaded- Dynamic: (%d), Static: (%d)--%n", objDynamic.size(), objStatic.size());
+        System.out.format("--ObjManager reloaded- Dynamic: (%d), Static: (%d)--%n", dCounter, sCounter);
     }
     
     /**
@@ -106,9 +113,8 @@ public class ObjectManager {
     public List<GameObject> getObjectsInRadius(int radius) {
         
         //filters and joins together both lists
-        return Stream.concat(
-                objStatic.stream().filter(go -> withinRadius(go, radius)),
-                objDynamic.stream().filter(go -> withinRadius(go, radius)))
+        return objs.stream()
+                .filter(go -> withinRadius(go, radius))
                 .collect(Collectors.toList());
     }
     
@@ -130,20 +136,20 @@ public class ObjectManager {
     public ObjectManager(Game game, LevelData data) {
         this.game= game;
         this.data= data.getObjectData();
-        objStatic= new ArrayList<>();
-        objDynamic= new ArrayList<>();
+        col= new CollisionHandler();
+        objs= new ArrayList<>();
         System.out.println("--ObjManager initialized--");
     }
 
-    public List<GameObject> getObjDynamic() {
-        return objDynamic;
-    }
-
-    public List<GameObject> getObjStatic() {
-        return objStatic;
+    public List<GameObject> getObjs() {
+        return objs;
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public CollisionHandler getCol() {
+        return col;
     }
 }

@@ -5,6 +5,7 @@
  */
 package gameobject;
 
+import gameobject.combat.Combat;
 import gameobject.data.StatsData;
 
 /**
@@ -14,11 +15,21 @@ import gameobject.data.StatsData;
 public class Stats {
     
     private int currHealth;
-    //TODO: [Combat] Add Combat stats here (aka combat timers, cooldowns,...)
+    private final Combat cmb;
     
     private final StatsData data;
     
     public Stats(StatsData data) {
         this.data= data;
+        this.cmb= new Combat(data.getCombat());
+    }
+
+    public int getCurrHealth() {
+        return currHealth;
+    }
+    
+    
+    public Combat combat() {
+        return cmb;
     }
 }

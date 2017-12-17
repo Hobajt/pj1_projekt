@@ -16,6 +16,7 @@ import java.util.Map;
 import javafx.scene.image.Image;
 import gameobject.state.ObjectState;
 import javafx.geometry.Point2D;
+import util.Const;
 import util.Rotation;
 import util.resource.ResourceType;
 import util.resource.Resources;
@@ -49,7 +50,7 @@ public class ModelFactory {
      * @return Returns Model based on given ID
      */
     public Model getModel(int id) {
-        System.out.format("-Model::Get: (%d)%n", id);
+        loadModel(id);
         if(cache.containsKey(id))
             return cache.get(id);
         return loadModel(id);
@@ -108,6 +109,46 @@ public class ModelFactory {
         System.out.format("  -loaded: (%d)%n", id);
         return m;
     }
+    /*
+    private Model testLoadModel(int id) {
+        Map<ObjectState,List<ModelImage>> data= new HashMap<>();
+        
+         //load model states
+        List<ObjectState> modelStates= loadModelStates(Integer.toString(id));
+        if(modelStates == null) {
+            return loadSimpleModel(id);
+        }
+        
+        //load each state's images in each direction
+        modelStates.forEach((state) -> {
+            data.put(state, testLoadStateImages(id, state));
+        });
+        
+        Model m= null;//new ModelComplex1(data, validation);
+        if(!cache.containsKey(id))
+            cache.put(id, m);
+        System.out.format("  -loaded: (%d)%n", id);
+        return m;
+    }
+    
+    private List<ModelImage> testLoadStateImages(int id, ObjectState state) {
+        List<ModelImage> l= new ArrayList<>();
+        
+        String path= ResourceType.IMAGE.buildFolderPath(String.format("models/%d/%s/", id, state));
+        
+        List<Image> rl;
+        for(int i= 0; i < Rotation.values().length; i++) {
+            rl= new ArrayList<>();
+            int n= 0;
+            InputStream is;
+            while((is= Resources.openStream(path + i + "/" + n + ".png")) != null) {
+                Image m= new Image(is);
+                rl.add(m);
+            }
+            l.add(new ModelImage(rl));
+        }
+        return l;
+    }*/
     
     /**
      * Loads all images for given state of a model<br>
@@ -169,7 +210,7 @@ public class ModelFactory {
      * @return Returns half of image's size as Point2D
      */
     static final Point2D setOffset(Image img) {
-        return new Point2D(img.getWidth(), img.getHeight());
+        return new Point2D(img.getWidth(), img.getHeight()).multiply(Const.IMG_OFFSET_SCALE);
     }
     
     /**

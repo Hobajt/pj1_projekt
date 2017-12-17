@@ -6,13 +6,16 @@ __________ urgent _________
 ☑			[GameCore]		Setup basic game architecture, gameUpdate ticks		(basic frame of (logically connected) classes, that will make the game run)
 ☑			[IngameView]	Ingame view implementation, camera movement and player centering
 ☑			[Input]				Input reading, and its integration into game
-☐			[Physics] 			Get the collision system working
+☑			[Physics] 			Get the collision system working
 ☑			[Movement] 		Basic movement, tickUpdates
-☑			[TempGraph]		Draw primitive shapes for recognition, no image and resource loadin
-☐			[Combat1]		Implement combat stage 1- simple shooting, maybe with cooldown
+☑			[TempGraph]		Draw primitive shapes for recognition, no image and resource loading
 ☑			[Player] 			Basic player implementation (player= special Creature)
+☑			[Combat1]		Implement combat stage 1- simple shooting, maybe with cooldown
 ☐			[AI]					Create basic AIController
-☐			[Resources] 		Replace all placeholder images and update all Resource loading methods
+☐			[Win Cond]		Add some win condition!!!
+☐			[Resources] 		Replace GIFs with PNGs and replace simple Image() with ImageAnim()
+
+
 
 _________ bonus ___________
 ☐			[DataLoading]	Move level data into files

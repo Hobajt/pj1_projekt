@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class CreatureData extends GameObjectData implements Serializable {
     
     private final StatsData statsData;
-
+    
     public CreatureData(int id, String name, FlagsType flags, int modelID, 
             Collider collider, CustomBehaviour behaviour, StatsData stats) {
         

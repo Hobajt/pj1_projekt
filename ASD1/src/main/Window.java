@@ -5,9 +5,7 @@
  */
 package main;
 
-import game.input.InputManager;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;

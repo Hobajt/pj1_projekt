@@ -5,12 +5,18 @@
  */
 package gameobject.data;
 
+import gameobject.collider.Collider;
+import gameobject.collider.ColliderBuilder;
+import gameobject.collider.ColliderType;
 import gameobject.data.flags.FlagsType;
+import gameobject.model.ModelFactory;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.geometry.Point2D;
+import util.Const;
 import util.resource.ResourceType;
 import util.resource.Resources;
 
@@ -70,13 +76,67 @@ public class ObjectDataFactory {
      * @return Returns GameObject with given ID
      */
     public GameObjectData getData(int id) {
-        System.out.format("-ObjData::Get: (%d)%n", id);
         if(cache.containsKey(id))
             return cache.get(id);
         
         return loadData(id);
     }
     
+    /**
+     * <b>TEMPORARY METHOD</b>
+     * Saves GameObjectData into .dat files
+     */
+    public void SaveDataBulk() {
+        
+        saveDataHelper(0, "PlayerObject", FlagsType.CREATURE, 0, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(0), 
+                        ColliderType.CREATURE, new Point2D(0,
+                            -ModelFactory.inst().getModel(0).getSizeOffset().getY()*(0.95-Const.IMG_CREATURE_SCALE)),
+                        false), new StatsData());
+        
+        saveDataHelper(1, "Creature 1", FlagsType.CREATURE, 1, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(1),
+                        ColliderType.NORMAL, Point2D.ZERO, false), new StatsData());
+        
+        saveDataHelper(2, "Creature 2", FlagsType.CREATURE, 0, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(2),
+                        ColliderType.NORMAL, Point2D.ZERO, false), new StatsData());
+        
+        
+        saveDataHelper(4, "Tile4", FlagsType.STATIC, 4, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(4),
+                        ColliderType.NORMAL, Point2D.ZERO, false), null);
+        
+        saveDataHelper(5, "Tile5", FlagsType.STATIC, 5, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(5),
+                        ColliderType.NORMAL, Point2D.ZERO, false), null);
+        
+        saveDataHelper(6, "Tile6", FlagsType.STATIC, 6, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(6),
+                        ColliderType.HALF_Y, Point2D.ZERO, false), null);
+        
+        saveDataHelper(7, "Tile7", FlagsType.STATIC, 7, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(8),
+                        ColliderType.NORMAL, Point2D.ZERO, false), null);
+        
+        saveDataHelper(8, "Tile5", FlagsType.STATIC, 8, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(8),
+                        ColliderType.NORMAL, Point2D.ZERO, false), null);
+        
+        saveDataHelper(9, "Tile5", FlagsType.STATIC, 9, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(9),
+                        ColliderType.NORMAL, Point2D.ZERO, false), null);
+    }
+    
+    private void saveDataHelper(int id, String name, FlagsType t, int mID, Collider collider, StatsData st) {
+        GameObjectData save;
+        if(st == null)
+            save= new GameObjectData(id, name, t, mID, collider, null);
+        else
+            save= new CreatureData(id, name, t, mID, collider, null, st);
+        
+        saveData(save);
+    }
     
     /**
      * <b>TEMPORARY METHOD</b><br>
@@ -93,34 +153,5 @@ public class ObjectDataFactory {
         } catch (IOException e) {
             System.err.println("Error while saving data: " + e.getMessage());
         }
-    }
-    
-    /**
-     * <b>TEMPORARY METHOD</b>
-     * Saves GameObjectData into .dat files
-     */
-    public void SaveObjectData() {
-        
-        CreatureData pl= new CreatureData(0, "PlayerObject", FlagsType.CREATURE, 0, null, null, new StatsData());
-        CreatureData cr1= new CreatureData(1, "Creature", FlagsType.CREATURE, 0, null, null, new StatsData());
-        CreatureData cr2= new CreatureData(2, "Creature2", FlagsType.CREATURE, 1, null, null, new StatsData());
-        GameObjectData go1= new GameObjectData(3, "Tile1", FlagsType.STATIC, 2, null, null);
-        GameObjectData go2= new GameObjectData(4, "Tile2", FlagsType.STATIC, 3, null, null);
-        GameObjectData go3= new GameObjectData(5, "Tile2", FlagsType.STATIC, 4, null, null);
-        GameObjectData go4= new GameObjectData(6, "Tile2", FlagsType.STATIC, 5, null, null);
-        GameObjectData go5= new GameObjectData(7, "Tile2", FlagsType.STATIC, 6, null, null);
-        GameObjectData go6= new GameObjectData(8, "Tile2", FlagsType.STATIC, 7, null, null);
-        
-        saveData(pl);
-        saveData(cr1);
-        saveData(cr2);
-        saveData(go1);
-        saveData(go2);
-        saveData(go3);
-        saveData(go4);
-        saveData(go5);
-        saveData(go6);
-        
-        System.out.println("saved");
     }
 }

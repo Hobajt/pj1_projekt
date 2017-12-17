@@ -7,6 +7,8 @@ package gameobject.data;
 
 import gameobject.data.flags.ObjectFlags;
 import gameobject.collider.Collider;
+import gameobject.collider.ColliderBuilder;
+import gameobject.collider.ColliderType;
 import gameobject.model.ModelFactory;
 import gameobject.data.behaviour.CustomBehaviour;
 import gameobject.data.flags.FlagsFactory;
@@ -27,7 +29,7 @@ public class GameObjectData implements Serializable {
     private final int modelID;
     private final Collider collider;
     private final CustomBehaviour behaviour;
-
+    
     public GameObjectData(int id, String name, FlagsType flags, int modelID, 
             Collider collider, CustomBehaviour behaviour) {
         
@@ -62,9 +64,9 @@ public class GameObjectData implements Serializable {
     public Model getModel() {
         return ModelFactory.inst().getModel(modelID);
     }
-
+    
     public Collider getCollider() {
-        return collider;
+        return this.collider;
     }
 
     public CustomBehaviour getBehaviour() {

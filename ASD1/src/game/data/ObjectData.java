@@ -5,6 +5,8 @@
  */
 package game.data;
 
+import gameobject.data.GameObjectData;
+import gameobject.data.ObjectDataFactory;
 import util.Transform;
 import gameobject.spawner.Spawner;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javafx.geometry.Point2D;
+import util.Const;
 
 /**
  * Contains all data related to objects on current level
@@ -63,21 +67,33 @@ class ObjectData {
         lst.add(new Transform(-200,-150));
         initialObjects.put(4, lst);*/
         
+        drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(-20,150), 180, 4);
+        Point2D end= drawObjectLine(ObjectDataFactory.inst().getData(8), new Point2D(100,70), -90, 4);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(end));
+        initialObjects.put(9, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(-90,-150));
+        initialObjects.put(6, lst);
+        
+        /*
         lst= new ArrayList<>();
         lst.add(new Transform(0,150));
         initialObjects.put(5, lst);
         
         lst= new ArrayList<>();
-        lst.add(new Transform(200,150));
+        lst.add(new Transform(90,150));
         initialObjects.put(6, lst);
         
         lst= new ArrayList<>();
-        lst.add(new Transform(-150,150));
+        lst.add(new Transform(180,150));
         initialObjects.put(7, lst);
         
         lst= new ArrayList<>();
-        lst.add(new Transform(0,-150));
-        initialObjects.put(8, lst);
+        lst.add(new Transform(-90,150));
+        initialObjects.put(8, lst);*/
         
         //playerSpawn
         //lst= Arrays.asList(new Transform())
@@ -144,5 +160,29 @@ class ObjectData {
 
     public List<Transform> getPlayerSpawn() {
         return playerSpawn;
+    }
+    
+    /**
+     * Helper method that generates line of gameobjects
+     * @param gd
+     * @param startPos
+     * @param angle 
+     * @return Returns last position after last one
+     */
+    private Point2D drawObjectLine(GameObjectData gd, Point2D startPos, double angle, int amount) {
+        Point2D sOff= gd.getModel().getSizeOffset().multiply(1/Const.IMG_OFFSET_SCALE);
+        angle= Math.toRadians(angle);
+        
+        List<Transform> l= new ArrayList<>();
+        for(int i= 0; i < amount; i++) {
+            Point2D pos= new Point2D(sOff.multiply(i).getX() * Math.cos(angle), sOff.multiply(i).getY() * Math.sin(angle));
+            pos= pos.add(startPos);
+            l.add(new Transform(pos));
+        }
+        initialObjects.put(gd.getId(), l);
+        
+        return new Point2D(sOff.multiply(amount).getX() * Math.cos(angle),
+                sOff.multiply(amount).getY() * Math.sin(angle))
+                .add(startPos);
     }
 }

@@ -76,4 +76,9 @@ public class GameObject {
     public ObjectState getState() {
         return state.getState();
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s(%d)", getData().getName(), uniqueID);
+    }
 }

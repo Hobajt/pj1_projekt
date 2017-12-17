@@ -5,6 +5,7 @@
  */
 package gameobject.data;
 
+import gameobject.combat.CombatData;
 import java.io.Serializable;
 
 /**
@@ -15,13 +16,29 @@ public class StatsData implements Serializable {
     
     //Stats might be alterable (dunno yet tho)
     
-    private int health;
-    private float moveSpeed;
-    //TODO: [Combat] Add CombatData here
+    private final int health;
+    private final float moveSpeed;
+    private final CombatData combat;
 
+    private static final int BASE_HEALTH= 50;
+    private static final float BASE_MS= 2;
+    
     public StatsData() {
-        this.health= 50;
-        this.moveSpeed= 2;
+        this(new CombatData());
+    }
+    
+    public StatsData(CombatData cmb) {
+        this(BASE_HEALTH, BASE_MS, cmb);
+    }
+    
+    public StatsData(int health, float ms) {
+        this(health, ms, new CombatData());
+    }
+    
+    public StatsData(int health, float ms, CombatData cmb) {
+        this.health= health;
+        this.moveSpeed= ms;
+        this.combat= cmb;
     }
     
     public int getHealth() {
@@ -30,5 +47,9 @@ public class StatsData implements Serializable {
 
     public float getMoveSpeed() {
         return moveSpeed;
+    }
+
+    public CombatData getCombat() {
+        return combat;
     }
 }

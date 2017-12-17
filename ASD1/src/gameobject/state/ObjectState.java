@@ -11,12 +11,7 @@ package gameobject.state;
  */
 public enum ObjectState {
     IDLE,
-    WALK,
-    RUN;
-    
-    private final long stateTime;
-
-    private ObjectState() {
-        stateTime= System.nanoTime();
-    }
+    RUN,
+    MELEE,
+    RANGED;
 }

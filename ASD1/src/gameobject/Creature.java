@@ -5,9 +5,12 @@
  */
 package gameobject;
 
+import gameobject.combat.Attack;
+import gameobject.combat.AttackType;
 import util.Transform;
 import gameobject.data.CreatureData;
 import javafx.geometry.Point2D;
+import util.Rotation;
 
 /**
  * Instance of Advanced GameObject within the game
@@ -23,6 +26,19 @@ public class Creature extends GameObject {
         stats= new Stats(getData().getStatsData());
     }
 
+    public Stats getStats() {
+        return stats;
+    }
+    
+    /**
+     * Returns true if attack timer is not running
+     * @param att
+     * @return 
+     */
+    public boolean canAttack(AttackType att) {
+        return stats.combat().canAttack(att);
+    }
+    
     /**
      * In addition to modifying position, applies this objects movementSpeed to it
      * @param moveDir Direction of the move
@@ -35,5 +51,26 @@ public class Creature extends GameObject {
     @Override
     public final CreatureData getData() {
         return (CreatureData) super.getData();
+    }
+    
+    public void updateTransform(Point2D moveDir, Rotation rot) {
+        if(!stats.combat().attackTimer()) {
+            move(moveDir);
+            rotate(rot);
+        }
+        else {
+            //attack specific moves
+            Point2D moveVal= Rotation.getMove(getTransform().getRotation());
+            Attack att= stats.combat().getCurrentAttack();
+            moveVal= new Point2D(moveVal.getX() * att.getMove().getX(), moveVal.getY() * att.getMove().getY());
+            
+            super.move(moveVal);
+            if(!att.isFreezeRotation())
+                rotate(rot);
+        }
+    }
+    
+    public void attack(AttackType att) {
+        getStateHandler().setState(stats.combat().attack(att));
     }
 }

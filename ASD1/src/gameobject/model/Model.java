@@ -48,7 +48,6 @@ public abstract class Model {
         try{ 
             return new Image(Resources.openStream(ResourceType.IMAGE, "none"));
         } catch (Exception e) {
-            e.printStackTrace();
             return new Image("none");
         }
     }

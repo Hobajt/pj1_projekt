@@ -5,6 +5,7 @@
  */
 package gameobject.state;
 
+import gameobject.Stats;
 import gameobject.player.PlayerInput;
 
 /**
@@ -16,14 +17,37 @@ import gameobject.player.PlayerInput;
 public class ObjectStateHandler {
     
     private ObjectState state;
+    private long expireTime;
 
     /**
-     * Updates this object state based on player input
+     * Updates this object's state based on player input
      * @param input Players input class
+     * @param stats
      */
-    public void update(PlayerInput input) {
+    public void update(PlayerInput input, Stats stats) {
+        boolean canModify= true;
         
-        state= input.isMoving() ? ObjectState.RUN : ObjectState.IDLE;
+        if(state.ordinal() >= ObjectState.MELEE.ordinal()) {
+            //System.out.println((expireTime) + "\n" + System.currentTimeMillis());
+            
+            if(stats.combat().attackTimer()) {
+                canModify= false;
+            }
+        }
+        
+        if(canModify) {
+            //apply movement
+            state= input.isMoving() ? ObjectState.RUN : ObjectState.IDLE;
+        }
+    }
+    
+    public void setState(ObjectState state) {
+        this.setState(state, 0);
+    }
+    
+    public void setState(ObjectState state, long expireTime) {
+        this.state= state;
+        this.expireTime= System.currentTimeMillis() + expireTime;
     }
     
     public ObjectStateHandler() {
@@ -32,9 +56,5 @@ public class ObjectStateHandler {
 
     public ObjectState getState() {
         return state;
-    }
-
-    public void setState(ObjectState state) {
-        this.state = state;
     }
 }

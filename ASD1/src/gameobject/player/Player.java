@@ -32,11 +32,36 @@ public class Player {
     private final PlayerInput input;
     
     /**
+     * Updates local players state and position
+     */
+    public void updatePlayer() {
+        
+        //L8R add checking for special buttons that will trigger special attacks with CDs
+        
+        if(input.attackTrigger() && playerObject.canAttack(input.getAttackType())) {
+            //checks if player can attack with currently active attack
+            playerObject.attack(input.getAttackType());
+        }
+        else if(input.switchAttackTrigger()) {
+            //cycles to another available attack
+            input.switchAttackType(playerObject.getStats().combat().getNextAttackType(input.getAttackType()));
+        }
+        
+        //move- consider freezing movement when attacking
+        playerObject.updateTransform(input.getMoveVector(), input.getRotation());
+        
+        //update state and rotation
+        playerObject.getStateHandler().update(input, playerObject.getStats());
+    }
+    
+    /**
      * Moves any dependencies from old playerObject to new one (listeners,...)
      */
     private void overridePlayer() {
         if(instance != null) {
-            //override dependencies
+        }
+        else {
+            input.switchAttackType(playerObject.getStats().combat().getNextAttackType(input.getAttackType()));
         }
         instance= this;
     }

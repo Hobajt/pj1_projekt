@@ -5,6 +5,8 @@
  */
 package util;
 
+import javafx.geometry.Point2D;
+
 /**
  * Serves as rotation description (double representation is not needed)
  * @author Radek
@@ -37,5 +39,9 @@ public enum Rotation {
                 return r;
         }
         return getDefault();
+    }
+    
+    public static Point2D getMove(Rotation rot) {
+        return new Point2D(rot.x, rot.y).normalize(); 
     }
 }
