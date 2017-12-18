@@ -6,11 +6,8 @@
 package game.input;
 
 import game.input.handler.InputHandler;
-import util.Const;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import main.Window;

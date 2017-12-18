@@ -13,8 +13,11 @@ __________ urgent _________
 ☑			[Combat1]		Implement combat stage 1- simple shooting, maybe with cooldown
 ☐			[AI]					Create basic AIController
 ☐			[Win Cond]		Add some win condition!!!
+☐			[TileSet]			Add tiles set management
 ☐			[Resources] 		Replace GIFs with PNGs and replace simple Image() with ImageAnim()
 
+
+	- add static water gameObjects
 
 
 _________ bonus ___________

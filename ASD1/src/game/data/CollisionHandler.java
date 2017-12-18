@@ -42,11 +42,15 @@ public class CollisionHandler {
             tickCounter= 0;
         }
         
+        
+        //TODO: mb for each collision check (within the square) memorize list of 
+        //collisions that already happened, so that it doesn't apply twice (AI can move player object)
+        
         //check for collisions for each dynamic gameObject
-        checkCollisions(Player.inst().getObject());
         for(GameObject o : objs) {
             checkCollisions(o);
         }
+        checkCollisions(Player.inst().getObject());
     }
 
     /**
@@ -67,7 +71,7 @@ public class CollisionHandler {
             for(int y= ind.y-1; y <= ind.y+1; y++) {
                 try {
                     squareCheck(go, x, y);
-                } catch (NullPointerException e) {}
+                } catch (NullPointerException e) {} //catches when mid square is 0 or last index
             }
         }
     }
@@ -96,7 +100,6 @@ public class CollisionHandler {
     private void collisionCheck(GameObject g1, GameObject g2) {
         if(g1 == g2)
             return;
-        
         
         Collision col= new Collision(g1, g2);
         Point2D fix= g1.getData().getCollider().checkCollision(col);

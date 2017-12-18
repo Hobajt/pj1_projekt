@@ -22,13 +22,13 @@ public class Const {
     public static final int BASE_HEIGHT= 480;
     public static final Color BACKGROUND= Color.BLACK;
     
-    public static final long ATTACK_CD= 1000;
-    public static final int ATTACK_LENGTH= 1000;
+    public static final int MOVE_BREAK_DISTANCE= 6;     //pixel offset for position comparison
     
-    public static final double IMG_CREATURE_SCALE= 0.6;
+    public static final double IMG_CREATURE_SCALE= 0.6; //collider scaling for creatures
     public static final double IMG_OFFSET_SCALE= 0.4;   //scale value for centering of images
     
     public static final int T_COL_SORTING= 20;          //period for objects grid aligning
+    public static final int T_SCREEN_ORDER= 30;         //period for screen objects order changing
     public static final int T_SCREEN_FILTER= 20;        //period for screen object dumping
     
     //TODO: [Resources] Rework button styles - add some factory and load from file 

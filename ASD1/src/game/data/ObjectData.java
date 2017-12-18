@@ -68,7 +68,10 @@ class ObjectData {
         initialObjects.put(4, lst);*/
         
         drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(-20,150), 180, 4);
-        Point2D end= drawObjectLine(ObjectDataFactory.inst().getData(8), new Point2D(100,70), -90, 4);
+        GameObjectData gd= ObjectDataFactory.inst().getData(8);
+        GameObjectData gdd= ObjectDataFactory.inst().getData(9);
+        Point2D end= drawObjectLine(gd, new Point2D(100,70), -90, 4);
+        end= new Point2D(end.getX(), end.getY() + (gd.getModel().getSizeOffset().getY() - gdd.getModel().getSizeOffset().getY()));
         
         lst= new ArrayList<>();
         lst.add(new Transform(end));
@@ -77,6 +80,12 @@ class ObjectData {
         lst= new ArrayList<>();
         lst.add(new Transform(-90,-150));
         initialObjects.put(6, lst);
+        
+        lst= new ArrayList<>();
+        lst.add(new Transform(-50,60));
+        //lst.add(new Transform(-60,0));
+        //lst.add(new Transform(-100,0));
+        initialObjects.put(1, lst);
         
         /*
         lst= new ArrayList<>();

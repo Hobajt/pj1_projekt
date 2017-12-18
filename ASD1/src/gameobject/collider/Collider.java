@@ -19,6 +19,12 @@ public class Collider implements Serializable {
     private final int offX, offY;
     private final int x,y;
 
+    /**
+     * Checks for collision between two GameObjects
+     * @param col
+     * @return Returns the smallest fix vector out of the collision or null
+     * if no collision is happening
+     */
     public Point2D checkCollision(Collision col) {
         
         if(validateTrigger(col)) {
@@ -40,6 +46,7 @@ public class Collider implements Serializable {
         if(yCol > 0)
             return null;
             
+        //returns the closest vector out of the collision
         if(xCol > yCol)
             return new Point2D(col.isOtherBehindXAxis() ? -xCol : xCol, 0);
         else

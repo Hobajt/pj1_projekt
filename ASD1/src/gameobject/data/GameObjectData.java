@@ -10,11 +10,11 @@ import gameobject.collider.Collider;
 import gameobject.collider.ColliderBuilder;
 import gameobject.collider.ColliderType;
 import gameobject.model.ModelFactory;
-import gameobject.data.behaviour.CustomBehaviour;
 import gameobject.data.flags.FlagsFactory;
 import gameobject.data.flags.FlagsType;
 import gameobject.model.Model;
 import java.io.Serializable;
+import gameobject.data.behaviour.BehaviourData;
 
 /**
  * Data class, that describes basic GameObject
@@ -28,10 +28,10 @@ public class GameObjectData implements Serializable {
     private final FlagsType flags;
     private final int modelID;
     private final Collider collider;
-    private final CustomBehaviour behaviour;
+    private final BehaviourData behaviour;
     
     public GameObjectData(int id, String name, FlagsType flags, int modelID, 
-            Collider collider, CustomBehaviour behaviour) {
+            Collider collider, BehaviourData behaviour) {
         
         this.id= id;
         this.name= name;
@@ -69,7 +69,7 @@ public class GameObjectData implements Serializable {
         return this.collider;
     }
 
-    public CustomBehaviour getBehaviour() {
+    public BehaviourData getBehaviour() {
         return behaviour;
     }
 }

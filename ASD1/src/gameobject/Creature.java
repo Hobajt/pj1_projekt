@@ -53,7 +53,7 @@ public class Creature extends GameObject {
         return (CreatureData) super.getData();
     }
     
-    public void updateTransform(Point2D moveDir, Rotation rot) {
+    public void update(Point2D moveDir, Rotation rot) {
         if(!stats.combat().attackTimer()) {
             move(moveDir);
             rotate(rot);
@@ -68,6 +68,8 @@ public class Creature extends GameObject {
             if(!att.isFreezeRotation())
                 rotate(rot);
         }
+        
+        getStateHandler().update(moveDir, stats);
     }
     
     public void attack(AttackType att) {

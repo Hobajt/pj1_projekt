@@ -46,7 +46,7 @@ public class GameOffline extends Game {
     
     public GameOffline(String levelID) throws GameException {
         super(levelID);
-        uIDCounter= 0;
+        uIDCounter= 1;
         gameUpdate= new GameUpdateGenerator();
         resetLevel();
         getGameLoop().start();

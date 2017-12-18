@@ -33,7 +33,8 @@ class ViewObjectManager {
     private final Group stat;
     private final Group back;
     
-    private int tickCounter;
+    private int filterTimer;
+    private int orderTimer;
     
     public ViewObjectManager(GameView view) {
         this.view= view;
@@ -42,7 +43,7 @@ class ViewObjectManager {
         front= Window.inst().getGroup(Window.GroupType.IN_FRONT);
         stat= Window.inst().getGroup(Window.GroupType.STATIC);
         back= Window.inst().getGroup(Window.GroupType.BEHIND);
-        tickCounter= 0;
+        filterTimer= 0;
     }
     
     /**
@@ -55,9 +56,9 @@ class ViewObjectManager {
         updatePlayer();
         
         //every Nth frame, filter out old ScreenObjects that are no longer relevant
-        if(++tickCounter > Const.T_SCREEN_FILTER) {
+        if(++filterTimer > Const.T_SCREEN_FILTER) {
             dropRedundantObjects();
-            tickCounter= 0;
+            filterTimer= 0;
         }
         
         for(GameObject g : objs) {
@@ -81,9 +82,55 @@ class ViewObjectManager {
             s.setImage(g.getState(), g.getTransform().getRotation());
         }
         
+        //every Nth frame, find closest object for each dynamic GO and determine the front one
+        if(++orderTimer > Const.T_SCREEN_ORDER) {
+            updateObjectOrder(objs);
+            orderTimer= 0;
+        } 
+        
         return player.getGameObject().getTransform().getPosition();
     }
     
+    /**
+     * Updates screen order for every object on screen (which on is in front)
+     * @param objs 
+     */
+    private void updateObjectOrder(List<GameObject> objs) {
+        
+        //go through all objects
+        for(GameObject o : objs) {
+            innerOrderUpdate(objs, o, imgs.get(o.getUniqueID()));
+        }
+        innerOrderUpdate(objs, Player.inst().getObject(), player);
+    }
+    
+    /**
+     * Changes order for 1 GameObject
+     * @param objs list of all objects on screen
+     * @param g GameObject to update
+     * @param s His screen representation
+     */
+    private void innerOrderUpdate(List<GameObject> objs, GameObject g, ScreenObject s) {
+        if(!g.getData().getFlags().isDynamic())
+                return;
+        
+            //for each, find closest object
+            GameObject closest= objs.isEmpty() ? null : objs.get(0);
+            double closestDist= g.distance(closest);
+            for(GameObject o : objs) {
+                if(g == o)
+                    continue;
+                
+                double dist= g.distance(o);
+                if(dist < closestDist) {
+                    closest= o;
+                    closestDist= dist;
+                }
+            }
+            
+            //compare distance from top left corner, move 1 into front
+            s.changeParent(g.closerToCorner(closest) ? back : front);
+    }
     
     /**
      * Iterates through all ScreenObjects and filters out objects, that are

@@ -31,6 +31,14 @@ public class ObjectManager {
     
     private Player player;
     
+    public void updateBehaviours() {
+        for(GameObject g : objs) {
+            if(!g.getData().getFlags().isDynamic())
+                return;
+            g.updateBehaviour();
+        }
+    }
+    
     public void updateCollisions() {
         col.updateCollisions(objs);
     }

@@ -6,10 +6,7 @@
 package game;
 
 import game.data.ObjectManager;
-import gameobject.Creature;
 import gameobject.player.Player;
-import gameobject.player.PlayerInput;
-import gameobject.state.ObjectState;
 
 /**
  * Core computation- generates new positions and applies
@@ -29,11 +26,10 @@ public class GameUpdateGenerator {
         //--Update all movement--
         Player.inst().updatePlayer();
         //updateCLientPlayers();
-        //applyAI();
+        objManager.updateBehaviours();
         
         //--Apply collisions--
         objManager.updateCollisions();
-        
         
     }
 }

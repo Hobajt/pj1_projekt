@@ -43,7 +43,7 @@ public class ColliderBuilder {
         
         switch(type) {
             case CREATURE:
-                siz= new Point2D(siz.getX()* Const.IMG_CREATURE_SCALE, siz.getY());
+                siz= siz.multiply(Const.IMG_CREATURE_SCALE);
                 break;
             case HALF_Y:
                 siz= new Point2D(siz.getX(), siz.getY() * 0.5);

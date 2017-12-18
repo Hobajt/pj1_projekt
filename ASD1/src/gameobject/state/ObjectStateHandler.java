@@ -6,7 +6,7 @@
 package gameobject.state;
 
 import gameobject.Stats;
-import gameobject.player.PlayerInput;
+import javafx.geometry.Point2D;
 
 /**
  * Class that manages objects state- applies priorities to certain states.
@@ -20,11 +20,11 @@ public class ObjectStateHandler {
     private long expireTime;
 
     /**
-     * Updates this object's state based on player input
-     * @param input Players input class
+     * Updates this object's state based on input
+     * @param moveDir
      * @param stats
      */
-    public void update(PlayerInput input, Stats stats) {
+    public void update(Point2D moveDir, Stats stats) {
         boolean canModify= true;
         
         if(state.ordinal() >= ObjectState.MELEE.ordinal()) {
@@ -37,8 +37,12 @@ public class ObjectStateHandler {
         
         if(canModify) {
             //apply movement
-            state= input.isMoving() ? ObjectState.RUN : ObjectState.IDLE;
+            state= isMoving(moveDir) ? ObjectState.RUN : ObjectState.IDLE;
         }
+    }
+    
+    private boolean isMoving(Point2D moveDir) {
+        return (moveDir.getX() != 0 || moveDir.getY() != 0);
     }
     
     public void setState(ObjectState state) {

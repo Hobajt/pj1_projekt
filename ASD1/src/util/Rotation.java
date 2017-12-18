@@ -33,9 +33,48 @@ public enum Rotation {
         return SOUTH;
     }
     
+    /**
+     * Generates rotation based on input vector
+     * @param x Direction on x axis
+     * @param y Direction on y axis
+     * @return Returns rotation corresponding to the input
+     */
     public static Rotation getByMoveDir(int x, int y) {
         for(Rotation r: Rotation.values()) {
             if(r.x == x && r.y == y)
+                return r;
+        }
+        return getDefault();
+    }
+    
+    /**
+     * Generates rotation based on input vector
+     * @param x Direction on x axis
+     * @param y Direction on y axis
+     * @return Returns rotation corresponding to the input
+     */
+    public static Rotation getByMoveDir(double x, double y) {
+        int vx= (int)Math.round(x);
+        int vy= (int)Math.round(y);
+        
+        for(Rotation r: Rotation.values()) {
+            if(r.x == vx && r.y == vy)
+                return r;
+        }
+        return getDefault();
+    }
+    
+    /**
+     * Generates rotation based on input vector
+     * @param p Input vector
+     * @return Returns rotation corresponding to the input
+     */
+    public static Rotation getByMoveDir(Point2D p) {
+        int vx= (int)Math.round(p.getX());
+        int vy= (int)Math.round(p.getY());
+        
+        for(Rotation r: Rotation.values()) {
+            if(r.x == vx && r.y == vy)
                 return r;
         }
         return getDefault();

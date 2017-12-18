@@ -48,10 +48,10 @@ public class Player {
         }
         
         //move- consider freezing movement when attacking
-        playerObject.updateTransform(input.getMoveVector(), input.getRotation());
+        playerObject.update(input.getMoveVector(), input.getRotation());
         
         //update state and rotation
-        playerObject.getStateHandler().update(input, playerObject.getStats());
+        //playerObject.getStateHandler().update(input.getMoveVector(), playerObject.getStats());
     }
     
     /**

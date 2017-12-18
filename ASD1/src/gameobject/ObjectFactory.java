@@ -46,7 +46,7 @@ public class ObjectFactory {
         else
             g= new GameObject(uID, gd, tr);
         
-        System.out.format("-Obj::Create: (%d:%d)%n", id, uID);
+        System.out.format("-Obj::Create: (%d:%s)%n", id, g);
         return g;
     }
 }
