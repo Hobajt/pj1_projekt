@@ -19,7 +19,21 @@ import util.Const;
  * Handles all GameObject collisions
  * @author Radek
  */
-public class CollisionHandler {
+public class CollisionEngine {
+    
+    //<editor-fold defaultstate="collapsed" desc="Singleton- inst(), cons()">
+    private static CollisionEngine instance;
+    
+    private CollisionEngine() {
+        this.grid= new HashMap<>();
+    }
+    
+    public static CollisionEngine inst() {
+        if(instance == null)
+            instance= new CollisionEngine();
+        return instance;
+    }
+    //</editor-fold>
     
     private int tickCounter= 0;
     
@@ -31,34 +45,23 @@ public class CollisionHandler {
     private final int GRID_Y= 100;
     
     /**
-     * Periodic collision detection update
+     * Periodically updates Collision grid, based on it's inner tickTimer
      * @param objs List of all GameObjects in the game
      */
-    public void updateCollisions(List<GameObject> objs) {
-        
-        //every Nth frame, update each object's box citizenship
+    public void updateGrid(List<GameObject> objs) {
         if(++tickCounter > Const.T_COL_SORTING) {
-            updateGrid(objs);
+            gridUpdate(objs);
             tickCounter= 0;
         }
-        
-        
-        //TODO: mb for each collision check (within the square) memorize list of 
-        //collisions that already happened, so that it doesn't apply twice (AI can move player object)
-        
-        //check for collisions for each dynamic gameObject
-        for(GameObject o : objs) {
-            checkCollisions(o);
-        }
-        checkCollisions(Player.inst().getObject());
     }
 
     /**
      * Checks for any collisions of given <b>dynamic</b> gameObject.<br>
-     * Only detects collisions with objects that are in the same or in neighboring square.
+     * Detection is only done within gameObject's square and all it's neighboring
+     * ones. (3x3, total of 9 squares)
      * @param go GameObject for checkup
      */
-    private void checkCollisions(GameObject go) {
+    public void handleCollisions(GameObject go) {
         
         //filters static gameObjects (only for collison, they still can be collided with)
         if(!go.getData().getFlags().isDynamic())
@@ -77,8 +80,8 @@ public class CollisionHandler {
     }
     
     /**
-     * Checks for collisions of given GameObject with all other objects in given square
-     * @param go GameObject that is to be compared with
+     * Collision check within <b>one</b> square
+     * @param go GameObject to check
      * @param x x index of the square
      * @param y y index of the square
      * @throws NullPointerException Thrown when given square is not initialized - thus is empty
@@ -92,7 +95,7 @@ public class CollisionHandler {
     }
     
     /**
-     * Individual check for collision between two objects.<br>
+     * Collision check between <b>two objects</b>.<br>
      * If objects are colliding, moves 1st object out of the 2nd
      * @param g1 1st object for comparison
      * @param g2 2nd object for comparison
@@ -106,7 +109,6 @@ public class CollisionHandler {
         
         if(fix != null) {
             g1.getTransform().move(fix);
-            //System.out.println(fix);
         }
     }
     
@@ -114,7 +116,7 @@ public class CollisionHandler {
      * Updates GameObjects grid assignments
      * @param objs List of all ingame GameObjects
      */
-    private void updateGrid(List<GameObject> objs) {
+    private void gridUpdate(List<GameObject> objs) {
         grid.clear();
         
         assignToGrid(Player.inst().getObject());
@@ -154,10 +156,6 @@ public class CollisionHandler {
         }
 
         grid.get(ind.y).get(ind.x).add(go);
-    }
-    
-    public CollisionHandler() {
-        this.grid= new HashMap<>();
     }
     
     /**

@@ -5,6 +5,7 @@
  */
 package game;
 
+import game.data.CollisionEngine;
 import game.data.ObjectManager;
 import gameobject.player.Player;
 
@@ -29,7 +30,7 @@ public class GameUpdateGenerator {
         objManager.updateBehaviours();
         
         //--Apply collisions--
-        objManager.updateCollisions();
+        CollisionEngine.inst().updateGrid(objManager.getObjs());
         
     }
 }

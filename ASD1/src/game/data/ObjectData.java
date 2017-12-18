@@ -83,7 +83,7 @@ class ObjectData {
         
         lst= new ArrayList<>();
         lst.add(new Transform(-50,60));
-        //lst.add(new Transform(-60,0));
+        lst.add(new Transform(-60,0));
         //lst.add(new Transform(-100,0));
         initialObjects.put(1, lst);
         

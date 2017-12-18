@@ -5,6 +5,7 @@
  */
 package gameobject;
 
+import game.data.CollisionEngine;
 import gameobject.combat.Attack;
 import gameobject.combat.AttackType;
 import util.Transform;
@@ -70,6 +71,7 @@ public class Creature extends GameObject {
         }
         
         getStateHandler().update(moveDir, stats);
+        CollisionEngine.inst().handleCollisions(this);
     }
     
     public void attack(AttackType att) {

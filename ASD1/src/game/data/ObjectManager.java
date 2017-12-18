@@ -25,7 +25,7 @@ public class ObjectManager {
     
     private final Game game;            //game controller instance
     private final ObjectData data;      //this level's object data
-    private final CollisionHandler col;   //Collision handler
+    //private final CollisionHandler col;   //Collision handler
     
     private final List<GameObject> objs;
     
@@ -37,10 +37,6 @@ public class ObjectManager {
                 return;
             g.updateBehaviour();
         }
-    }
-    
-    public void updateCollisions() {
-        col.updateCollisions(objs);
     }
     
     /**
@@ -144,7 +140,6 @@ public class ObjectManager {
     public ObjectManager(Game game, LevelData data) {
         this.game= game;
         this.data= data.getObjectData();
-        col= new CollisionHandler();
         objs= new ArrayList<>();
         System.out.println("--ObjManager initialized--");
     }
@@ -155,9 +150,5 @@ public class ObjectManager {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public CollisionHandler getCol() {
-        return col;
     }
 }
