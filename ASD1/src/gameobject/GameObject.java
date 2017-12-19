@@ -53,10 +53,22 @@ public class GameObject {
         this.data= data;
         this.transform= transform;
         
-        this.state= new ObjectStateHandler();
+        this.state= initHandler();
         this.behaviour= initBehaviour();
     }
+    
+    /**
+     * Helper method that creates state handler instance out of constructor
+     * @return 
+     */
+    private ObjectStateHandler initHandler() {
+        return ObjectState.createHandler(this);
+    }
 
+    /**
+     * Helper method that creates behaviour instance out of constructor
+     * @return 
+     */
     private Behaviour initBehaviour() {
             return (data.getBehaviour() != null) ? data.getBehaviour().createInstance(this) : null;
     }

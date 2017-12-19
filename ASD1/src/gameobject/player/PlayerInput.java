@@ -11,6 +11,7 @@ import game.input.handler.InputHandler;
 import gameobject.combat.AttackType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import main.FXApp;
 import util.Rotation;
 
 /**
@@ -35,6 +36,7 @@ public class PlayerInput {
     private final InputHandler yAxis;
     private final InputHandler attack;
     private final InputHandler switchAttack;
+    private final InputHandler gameMenu;
     
     private AttackType currentAttack;
     
@@ -68,10 +70,18 @@ public class PlayerInput {
         return currentAttack;
     }
     
+    public void gameMenu() {
+        if(gameMenu.read() == 1) {
+            FXApp.inst().pause();
+        }
+    }
+    
     private PlayerInput() {
         xAxis= HandlerFactory.inst().createNew(HandlerType.AXIS, "xAxis", KeyCode.A, KeyCode.D);
         yAxis= HandlerFactory.inst().createNew(HandlerType.AXIS, "yAxis", KeyCode.W, KeyCode.S);
         attack= HandlerFactory.inst().createNew(HandlerType.BUTTON, "Attack", KeyCode.SPACE, KeyCode.ENTER);
         switchAttack= HandlerFactory.inst().createNew(HandlerType.TRIGGER, "Switch Attack", KeyCode.R, KeyCode.R);
+        
+        gameMenu= HandlerFactory.inst().createNew(HandlerType.TRIGGER, "Game Menu", KeyCode.ESCAPE, KeyCode.ESCAPE);
     }
 }

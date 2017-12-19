@@ -8,13 +8,11 @@ package main;
 import game.Game;
 import game.GameOffline;
 import game.GameException;
+import game.data.TileData;
 import game.input.InputManager;
+import game.menu.GameMenu;
 import game.menu.MainMenu;
 import game.menu.Menu;
-import gameobject.data.ObjectDataFactory;
-import gameobject.model.ModelFactory;
-import gameobject.state.ObjectState;
-import java.util.Arrays;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -33,23 +31,24 @@ public class FXApp extends Application {
     private ResizeObserver onResize;
     
     private void TMP_saveAll() {
-        ObjectDataFactory.inst().SaveDataBulk();
-        ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN, ObjectState.MELEE, ObjectState.RANGED));
-        ModelFactory.SaveModelStates("1", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
+        //TileData.saveData();
+        //ObjectDataFactory.inst().SaveDataBulk();
+       // ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN, ObjectState.MELEE, ObjectState.RANGED));
+        //ModelFactory.SaveModelStates("1", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
     }
     
     @Override
     public void start(Stage primaryStage) throws Exception {
         
         //test obj saving
-        //TMP_saveAll();
+        TMP_saveAll();
         
         //<editor-fold defaultstate="collapsed" desc="Window initialization">
         instance= this;
         onResize= new ResizeObserver(Window.inst().getScene());
         InputManager.inst();
         
-        primaryStage.setTitle("kek");
+        primaryStage.setTitle("PJ1- Projekt");
         primaryStage.setScene(Window.inst().getScene());
         primaryStage.show();
         //</editor-fold>
@@ -67,6 +66,17 @@ public class FXApp extends Application {
         //create and show main menu (Play, Quit- later mb even options)
         activeMenu= new MainMenu(this::startGameOffline, this::quit);
         activeMenu.show();
+    }
+    
+    public void pause() {
+        game.setPaused(true);
+        activeMenu= new GameMenu(this::unpause, this::quit);
+        activeMenu.show();
+    }
+    
+    private void unpause() {
+        game.setPaused(false);
+        activeMenu.hide();
     }
     
     /**

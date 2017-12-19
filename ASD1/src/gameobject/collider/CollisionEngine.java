@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.data;
+package gameobject.collider;
 
 import gameobject.GameObject;
-import gameobject.collider.Collision;
 import gameobject.player.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +78,7 @@ public class CollisionEngine {
         }
     }
     
+    
     /**
      * Collision check within <b>one</b> square
      * @param go GameObject to check
@@ -131,9 +131,12 @@ public class CollisionEngine {
      * @return Returns Index of the square
      */
     private Index getObjectsIndex(GameObject go) {
+        return getObjectsIndex(go.getTransform().getPosition());
+    }
+    private Index getObjectsIndex(Point2D pos) {
         return new Index(
-                (int)(go.getTransform().getPosition().getX()/GRID_X),
-                (int)(go.getTransform().getPosition().getY()/GRID_Y)
+                (int)(pos.getX()/GRID_X),
+                (int)(pos.getY()/GRID_Y)
         );
     }
     
@@ -157,6 +160,40 @@ public class CollisionEngine {
 
         grid.get(ind.y).get(ind.x).add(go);
     }
+    
+    
+    
+    /**
+     * Collision check for a single object within 3x3 grid
+     * @param pos
+     * @param cd ColliderData of the object
+     * @return Returns List of objects that are colliding with given object
+     */
+    public List<GameObject> detectCollisions(Point2D pos, ColliderData cd) {
+        
+        Index ind= getObjectsIndex(new Point2D(cd.getX(), cd.getY()));
+        return squareDetect(pos, cd, ind.x, ind.y);
+    }
+    private List<GameObject> squareDetect(Point2D pos, ColliderData cd, int x, int y) throws NullPointerException {
+        List<GameObject> inSquare= grid.get(y).get(x);
+        
+        List<GameObject> l= new ArrayList<>();
+        for(GameObject o : inSquare) {
+            GameObject g= collisionDetect(pos, cd, o);
+            if(g != null)
+                l.add(g);
+        }
+        return l;
+    }
+    private GameObject collisionDetect(Point2D pos, ColliderData cd, GameObject g2) {
+        
+        if(g2.getData().getCollider().detectCollision(pos, cd, g2))
+            return g2;
+        return null;
+    }
+    //_____________________-
+    
+    
     
     /**
      * Helper nested class to pass indexes

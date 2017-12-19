@@ -10,7 +10,6 @@ import gameobject.GameObject;
 import gameobject.data.behaviour.Behaviour;
 import gameobject.data.behaviour.ai.combat.CombatAI;
 import gameobject.data.behaviour.ai.idle.IdleAI;
-import javafx.geometry.Point2D;
 import util.Rotation;
 
 /**
@@ -32,17 +31,15 @@ public class BehaviourAI implements Behaviour {
     @Override
     public void update() {
         
+        //update for combat (prior to idle)
         state= combat.update(state);
         
+        //update for idle state
         if(data.getIdle() != null)
             state= idle.update(state);
         
-        //generate move direction
-        //owner.move(state.getMoveDir());
-        
-        //owner.update(state.getMoveDir(), Rotation.getByMoveDir(state.getMoveDir()));
-        owner.update(new Point2D(1,0), Rotation.getByMoveDir(new Point2D(1,0)));
         //update state and movement
+        owner.update(state.getMoveDir(), Rotation.getByMoveDir(state.getMoveDir()));
     }
 
     BehaviourAI(BehaviourDataAI data, GameObject owner) {

@@ -5,31 +5,54 @@
  */
 package gameobject.combat;
 
+import gameobject.collider.Collider;
 import gameobject.state.ObjectState;
 import javafx.geometry.Point2D;
+import util.Rotation;
 
 /**
- *
+ * Describes a specific attack.
  * @author Radek
  */
-public class Attack {
+public abstract class Attack {
     
-    private final boolean special;
+    private final boolean special;          //for player- false == can be rotated on basicAttacks
     
-    private final int duration;
-    private final int cooldown;
-    private final ObjectState attackState;
-    
-    private final Point2D move;
-    private final boolean freezeRotation;
+    private final int baseValue;               //base value for any interaction with this attack
+    private final int duration;             //for how long will this attack's animation be up
+    private final int cooldown;             //cooldown
 
-    public Attack(boolean special, int duration, int cooldown, ObjectState attackState, Point2D move, boolean freezeRotation) {
+    /**
+     * Determines the movement during cast time (implementation specific)
+     * @param progress Time progress of the cast (in millis)
+     * @param inp Input from outside
+     * @param current Current Creature's moveDirection
+     * @return Returns customly modified vector, that will be applied to 
+     * the Creature's movement
+     */
+    public abstract Point2D getMove(int progress, Point2D inp, Point2D current);
+
+    /**
+     * Determines whether to freeze rotation (implementation specific)
+     * @param progress Time progress of the cast (in millis)
+     * @param current Current Creature's rotation
+     * @param inp Input from outside
+     * @return Returns new rotation for this Creature during attack
+     */
+    public abstract Rotation getRotation(int progress, Rotation inp, Rotation current);
+    
+    /**
+     * Returns object state, that will be shown, when this attack happens
+     * @param progress Time progress of the cast (in millis)
+     * @return Returns ObjectState
+     */
+    public abstract ObjectState getAttackState(int progress);
+    
+    public Attack(boolean special, int baseValue, int duration, int cooldown) {
         this.special = special;
+        this.baseValue= baseValue;
         this.duration = duration;
         this.cooldown = cooldown;
-        this.attackState = attackState;
-        this.move = move;
-        this.freezeRotation = freezeRotation;
     }
 
     /**
@@ -48,19 +71,7 @@ public class Attack {
         return cooldown;
     }
 
-    public Point2D getMove() {
-        return move;
-    }
-
-    public boolean isFreezeRotation() {
-        return freezeRotation;
-    }
-    
-    /**
-     * Returns object state, that will be shown, when this attack happens
-     * @return 
-     */
-    public ObjectState getAttackState() {
-        return attackState;
+    public int getBaseValue() {
+        return baseValue;
     }
 }

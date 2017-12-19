@@ -8,7 +8,8 @@ package gameobject.data.behaviour.ai;
 import javafx.geometry.Point2D;
 
 /**
- *
+ * Enumeration for AI state- also holds its move direction
+ * throughout the calculation process.
  * @author Radek
  */
 public enum AIState {

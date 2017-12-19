@@ -17,7 +17,6 @@ import javafx.geometry.Point2D;
 public class ObjectStateHandler {
     
     private ObjectState state;
-    private long expireTime;
 
     /**
      * Updates this object's state based on input
@@ -25,36 +24,14 @@ public class ObjectStateHandler {
      * @param stats
      */
     public void update(Point2D moveDir, Stats stats) {
-        boolean canModify= true;
-        
-        if(state.ordinal() >= ObjectState.MELEE.ordinal()) {
-            //System.out.println((expireTime) + "\n" + System.currentTimeMillis());
-            
-            if(stats.combat().attackTimer()) {
-                canModify= false;
-            }
-        }
-        
-        if(canModify) {
-            //apply movement
-            state= isMoving(moveDir) ? ObjectState.RUN : ObjectState.IDLE;
-        }
-    }
-    
-    private boolean isMoving(Point2D moveDir) {
-        return (moveDir.getX() != 0 || moveDir.getY() != 0);
+        state= (moveDir.getX() != 0 || moveDir.getY() != 0) ? ObjectState.RUN : ObjectState.IDLE;
     }
     
     public void setState(ObjectState state) {
-        this.setState(state, 0);
-    }
-    
-    public void setState(ObjectState state, long expireTime) {
         this.state= state;
-        this.expireTime= System.currentTimeMillis() + expireTime;
     }
     
-    public ObjectStateHandler() {
+    ObjectStateHandler() {
         state= ObjectState.IDLE;
     }
 

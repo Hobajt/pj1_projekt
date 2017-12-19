@@ -17,6 +17,18 @@ public class CombatAIAggressive extends CombatAI {
     @Override
     public AIState update(AIState state) {
         return AIState.IDLE;
+        
+        //determine the distance
+        
+        //generally- melee will be stronger than ranged
+        
+        //if has any ranged attack
+            //attack ranged until youre in melee range
+            //attack melee otherwise
+        
+        //else if melee
+            //move closer if not close enough
+            //spam attacks (cycle em)
     }
 
     @Override

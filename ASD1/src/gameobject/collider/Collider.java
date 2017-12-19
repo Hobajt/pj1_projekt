@@ -19,6 +19,23 @@ public class Collider implements Serializable {
     private final int offX, offY;
     private final int x,y;
 
+    public boolean detectCollision(Point2D pos, ColliderData cd, GameObject me) {
+        double xCol, yCol;
+        Point2D dif= me.getTransform().getPosition().subtract(cd.getPos(pos));
+        
+        //check xAxis
+        xCol= Math.abs(dif.getX()) - (x + cd.getX());
+        if(xCol > 0)
+            return false;
+        
+        //check yAxis
+        yCol= Math.abs(dif.getY()) - (y + cd.getY());
+        if(yCol > 0)
+            return false;
+        
+        return true;
+    }
+    
     /**
      * Checks for collision between two GameObjects
      * @param col

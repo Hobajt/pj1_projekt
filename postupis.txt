@@ -12,6 +12,7 @@ __________ urgent _________
 ☑			[Player] 			Basic player implementation (player= special Creature)
 ☑			[Combat1]		Implement combat stage 1- simple shooting, maybe with cooldown
 ☐			[AI]					Create basic AIController
+☐			[Combat2]		Implement it so that it actually does something (not just animations n shit)
 ☐			[Win Cond]		Add some win condition!!!
 ☐			[TileSet]			Add tiles set management
 ☐			[Resources] 		Replace GIFs with PNGs and replace simple Image() with ImageAnim()
@@ -22,7 +23,7 @@ __________ urgent _________
 
 _________ bonus ___________
 ☐			[DataLoading]	Move level data into files
-☐			[Combat23]		Advanced Combat (not both stages necessarily)
+☑			[Combat23]		Advanced Combat (not both stages necessarily)
 ☐			[AIAdvanced]	AI Controls for new combat, maybe something even better
 ☐			[Networking] 	Get networking to work, if possible- game core should be made so that it could be easily implemented
 	

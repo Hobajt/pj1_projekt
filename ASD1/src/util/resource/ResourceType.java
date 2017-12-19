@@ -12,7 +12,8 @@ package util.resource;
 public enum ResourceType {
     OBJECT("data/objects/", ".dat"),
     MODEL("images/models/", ".gif"),
-    IMAGE("images/", ".png");
+    IMAGE("images/", ".png"),
+    TILE("images/tiles/", ".png");
     
     private final String path;
     private final String extension;

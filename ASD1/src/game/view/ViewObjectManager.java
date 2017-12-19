@@ -36,14 +36,19 @@ class ViewObjectManager {
     private int filterTimer;
     private int orderTimer;
     
+    private final Group tiles;
+    
     public ViewObjectManager(GameView view) {
         this.view= view;
+        
         player= null;
         imgs= new HashMap<>();
         front= Window.inst().getGroup(Window.GroupType.IN_FRONT);
         stat= Window.inst().getGroup(Window.GroupType.STATIC);
         back= Window.inst().getGroup(Window.GroupType.BEHIND);
         filterTimer= 0;
+        view.getTileManager().init();
+        tiles= view.getTileManager().getTileset();
     }
     
     /**
@@ -88,7 +93,15 @@ class ViewObjectManager {
             orderTimer= 0;
         } 
         
+        updateTilePosition(player.getGameObject().getTransform().getPosition());
+        
         return player.getGameObject().getTransform().getPosition();
+    }
+    
+    private void updateTilePosition(Point2D center) {
+        Point2D screenPos= Window.inst().getScreenPoint(center, Point2D.ZERO);
+        tiles.setTranslateX(screenPos.getX());
+        tiles.setTranslateY(screenPos.getY());
     }
     
     /**
@@ -111,8 +124,9 @@ class ViewObjectManager {
      * @param s His screen representation
      */
     private void innerOrderUpdate(List<GameObject> objs, GameObject g, ScreenObject s) {
-        if(!g.getData().getFlags().isDynamic())
-                return;
+        try {
+            if(!g.getData().getFlags().isDynamic())
+                    return;
         
             //for each, find closest object
             GameObject closest= objs.isEmpty() ? null : objs.get(0);
@@ -126,10 +140,12 @@ class ViewObjectManager {
                     closest= o;
                     closestDist= dist;
                 }
+                
             }
             
             //compare distance from top left corner, move 1 into front
             s.changeParent(g.closerToCorner(closest) ? back : front);
+        } catch (NullPointerException e) {}
     }
     
     /**

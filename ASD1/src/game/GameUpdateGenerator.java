@@ -5,7 +5,7 @@
  */
 package game;
 
-import game.data.CollisionEngine;
+import gameobject.collider.CollisionEngine;
 import game.data.ObjectManager;
 import gameobject.player.Player;
 
@@ -24,13 +24,12 @@ public class GameUpdateGenerator {
     public void updateTick(ObjectManager objManager, double delta) {
         //System.out.println("tick");
         
+        //--Collision grid update--
+        CollisionEngine.inst().updateGrid(objManager.getObjs());
+        
         //--Update all movement--
         Player.inst().updatePlayer();
         //updateCLientPlayers();
         objManager.updateBehaviours();
-        
-        //--Apply collisions--
-        CollisionEngine.inst().updateGrid(objManager.getObjs());
-        
     }
 }

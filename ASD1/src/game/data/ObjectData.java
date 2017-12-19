@@ -45,27 +45,18 @@ class ObjectData {
         
         List<Transform> lst;
         
-        //initialObjects
+        
+        //horizontal walls
+        drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(0,350), 180, 19, true);
+        drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(0,-350), 180, 19, true);
+        
+        //vertical walls
+        GameObjectData gd= ObjectDataFactory.inst().getData(8);
+        drawObjectLine(gd, new Point2D(560,0), -90, 13, false);
+        drawObjectLine(gd, new Point2D(-560,0), -90, 13, false);
+        
         /*
-        lst= new ArrayList<>();
-        lst.add(new Transform(-50,60));
-        initialObjects.put(1, lst);
-        
-        lst= new ArrayList<>();
-        lst.add(new Transform(100,-100));
-        initialObjects.put(2, lst);
-        
-        lst= new ArrayList<>();
-        lst.add(new Transform(-120,-150));
-        initialObjects.put(3, lst);
-        
-        lst= new ArrayList<>();
-        lst.add(new Transform(-120,-150));
-        initialObjects.put(1, lst);
-        
-        lst= new ArrayList<>();
-        lst.add(new Transform(-200,-150));
-        initialObjects.put(4, lst);*/
+        drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(-20,150), 180, 4);
         
         drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(-20,150), 180, 4);
         GameObjectData gd= ObjectDataFactory.inst().getData(8);
@@ -75,7 +66,7 @@ class ObjectData {
         
         lst= new ArrayList<>();
         lst.add(new Transform(end));
-        initialObjects.put(9, lst);
+        initialObjects.put(9, lst);*/
         
         lst= new ArrayList<>();
         lst.add(new Transform(-90,-150));
@@ -178,7 +169,9 @@ class ObjectData {
      * @param angle 
      * @return Returns last position after last one
      */
-    private Point2D drawObjectLine(GameObjectData gd, Point2D startPos, double angle, int amount) {
+    private Point2D drawObjectLine(GameObjectData gd, Point2D startPos, double angle, int amount, boolean centerX) {
+        Point2D centerOff= gd.getModel().getSizeOffset().multiply(1/Const.IMG_OFFSET_SCALE).multiply(amount/2);
+        
         Point2D sOff= gd.getModel().getSizeOffset().multiply(1/Const.IMG_OFFSET_SCALE);
         angle= Math.toRadians(angle);
         
@@ -186,9 +179,16 @@ class ObjectData {
         for(int i= 0; i < amount; i++) {
             Point2D pos= new Point2D(sOff.multiply(i).getX() * Math.cos(angle), sOff.multiply(i).getY() * Math.sin(angle));
             pos= pos.add(startPos);
+            if(centerX)
+                pos= pos.add(centerOff.getX(), 0);
+            else
+                pos= pos.add(0, centerOff.getY());
             l.add(new Transform(pos));
         }
-        initialObjects.put(gd.getId(), l);
+        if(initialObjects.containsKey(gd.getId()))
+            initialObjects.get(gd.getId()).addAll(l);
+        else
+            initialObjects.put(gd.getId(), l);
         
         return new Point2D(sOff.multiply(amount).getX() * Math.cos(angle),
                 sOff.multiply(amount).getY() * Math.sin(angle))

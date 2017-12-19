@@ -17,7 +17,7 @@ public class Player {
     private static Player instance;
     
     public Player(Creature c) {
-        this.playerObject= c;
+        this.plObj= c;
         this.input= PlayerInput.inst();
         
         overridePlayer();
@@ -28,7 +28,7 @@ public class Player {
     }
     //</editor-fold>
     
-    private final Creature playerObject;
+    private final Creature plObj;
     private final PlayerInput input;
     
     /**
@@ -36,19 +36,19 @@ public class Player {
      */
     public void updatePlayer() {
         
-        //L8R add checking for special buttons that will trigger special attacks with CDs
+        input.gameMenu();
         
-        if(input.attackTrigger() && playerObject.canAttack(input.getAttackType())) {
+        if(input.attackTrigger() && plObj.canAttack(input.getAttackType())) {
             //checks if player can attack with currently active attack
-            playerObject.attack(input.getAttackType());
+            plObj.attack(input.getAttackType());
         }
         else if(input.switchAttackTrigger()) {
             //cycles to another available attack
-            input.switchAttackType(playerObject.getStats().combat().getNextAttackType(input.getAttackType()));
+            input.switchAttackType(plObj.getStats().combat().getNextAttackType(input.getAttackType()));
         }
         
         //move- consider freezing movement when attacking
-        playerObject.update(input.getMoveVector(), input.getRotation());
+        plObj.update(input.getMoveVector(), input.getRotation());
         
         //update state and rotation
         //playerObject.getStateHandler().update(input.getMoveVector(), playerObject.getStats());
@@ -61,13 +61,13 @@ public class Player {
         if(instance != null) {
         }
         else {
-            input.switchAttackType(playerObject.getStats().combat().getNextAttackType(input.getAttackType()));
+            input.switchAttackType(plObj.getStats().combat().getNextAttackType(input.getAttackType()));
         }
         instance= this;
     }
 
     public Creature getObject() {
-        return playerObject;
+        return plObj;
     }
 
     public PlayerInput getInput() {

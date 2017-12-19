@@ -25,7 +25,6 @@ public class ObjectManager {
     
     private final Game game;            //game controller instance
     private final ObjectData data;      //this level's object data
-    //private final CollisionHandler col;   //Collision handler
     
     private final List<GameObject> objs;
     

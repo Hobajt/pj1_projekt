@@ -6,6 +6,7 @@
 package game.view;
 
 import game.data.ObjectManager;
+import game.data.TileData;
 import javafx.geometry.Point2D;
 import main.Resizable;
 import main.Window;
@@ -17,7 +18,8 @@ import main.Window;
 public class GameView implements Resizable {
     
     private Point2D center;
-    private final ViewObjectManager objs;
+    private final ViewObjectManager viewManager;
+    private final TileManager tileManager;
     
     private int renderRadius;
 
@@ -38,7 +40,7 @@ public class GameView implements Resizable {
     public void updateView(ObjectManager objManager) {
         
         //get objects that are in some distance from player, draw em
-        center= objs.update(objManager.getObjectsInRadius(renderRadius));
+        center= viewManager.update(objManager.getObjectsInRadius(renderRadius));
         
         
         //center on player
@@ -46,13 +48,18 @@ public class GameView implements Resizable {
         //update objects group dependencies (only ddo for dynamic objects)
     }
     
-    public GameView() {
-        objs= new ViewObjectManager(this);
+    public GameView(TileData tData) {
+        tileManager= new TileManager(tData);
+        viewManager= new ViewObjectManager(this);
         onResize();
         System.out.println("--GameView Initialized--");
     }
 
     public int getRenderRadius() {
         return renderRadius;
+    }
+
+    public TileManager getTileManager() {
+        return tileManager;
     }
 }

@@ -45,14 +45,6 @@ public class InputManager {
     }
     //</editor-fold>
     
-    /**
-     * Auxiliary method, that logs current values of all InputHandlers
-     */
-    public void logHandlerStates() {
-        String out= String.format("%n___%n");
-        out = handlers.stream().map((h) -> String.format("%s: %d%n", h.getName(), h.read())).reduce(out, String::concat);
-    }
-    
     
     /**
      * Adds new handler to the manager

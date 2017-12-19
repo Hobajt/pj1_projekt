@@ -30,4 +30,10 @@ public class LevelData {
     ObjectData getObjectData() {
         return objectData;
     }
+
+    public TileData getTileData() {
+        return tileData;
+    }
+    
+    
 }

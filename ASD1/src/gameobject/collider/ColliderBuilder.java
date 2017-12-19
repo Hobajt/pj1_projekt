@@ -30,6 +30,10 @@ public class ColliderBuilder {
     //</editor-fold>
     
     
+    public Collider buildNonObject(Point2D offset, int x, int y, boolean trigger) {
+        return new Collider(trigger, offset, x, y);
+    }
+    
     /**
      * Generates new collider
      * @param m Model of the gameObject- required for image size

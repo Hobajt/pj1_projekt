@@ -8,6 +8,7 @@ package game;
 import game.data.ObjectManager;
 import game.data.LevelData;
 import game.data.LevelLoadingException;
+import game.data.TileData;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public abstract class Game {
     
     private LevelData data;
     private ObjectManager objManager;
+    
+    private boolean paused;
     
     /**
      * Generates unique Identifier for an object instance
@@ -81,5 +84,21 @@ public abstract class Game {
 
     public final ObjectManager getObjManager() {
         return objManager;
+    }
+    
+    public TileData getTileData() {
+        return this.data.getTileData();
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+        if(paused)
+            gameLoop.stop();
+        else
+            gameLoop.start();
     }
 }

@@ -46,8 +46,6 @@ public class GameLoop extends AnimationTimer {
         
         data.nextTick(delta);
         
-        //System.out.println(frameRate);
-        
         lastTick= now;
     }
 
@@ -57,7 +55,7 @@ public class GameLoop extends AnimationTimer {
     
     public GameLoop(Game data) {
         this.data= data;
-        this.view= new GameView();
+        this.view= new GameView(data.getTileData());
         FXApp.inst().resizeObserver().addListener(view);   //dont have to remove, will be receiving till the end
     }
 }

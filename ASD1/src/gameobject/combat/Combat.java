@@ -5,7 +5,6 @@
  */
 package gameobject.combat;
 
-import gameobject.state.ObjectState;
 import java.util.Map;
 
 /**
@@ -21,18 +20,12 @@ public class Combat {
     
     private final CombatData data;
     
-    public Combat(CombatData data) {
-        this.data= data;
-        attackEnd= 0;
-        cooldowns= data.generateCooldowns();
-    }
-    
     /**
      * True if Creature can use speficied attack
      * @param att
-     * @return 
+     * @return Returns true if specified attack can be used.
      */
-    public boolean canAttack(AttackType att) {
+    public boolean canUseAttack(AttackType att) {
         try {
             return cooldowns.get(att) < System.currentTimeMillis();
         } catch (NullPointerException e) {
@@ -41,22 +34,52 @@ public class Combat {
     }
     
     /**
-     * <b>Signal for attack</b><br>
-     * Updates attack state- sets attack timer and specified attack's cooldown
-     * @param att
+     * True if attack timer is still running
      * @return 
      */
-    public ObjectState attack(AttackType att) {
-        if(!canAttack(att))
-            return ObjectState.IDLE;
+    public boolean attInProgress() {
+        return attackEnd >= System.currentTimeMillis();
+    }
+    
+    /**
+     * Getter for ongoing attack progress.
+     * @return Returns cast time progress in millis (returns negative if no attack
+     * is progressing)
+     */
+    public int getProgress() {
+        return (int)(attackEnd - System.currentTimeMillis());
+    }
+    
+    /**
+     * Getter for ongoing attack progress in %.
+     * @return Returns % of attack's progress.
+     */
+    public float getProgressPercentage() {
+        return (float)((attackEnd - System.currentTimeMillis())/data.getAttack(lastAttack).getCooldown());
+    }
+    
+    /**
+     * <b>Attack signal</b><br>
+     * Updates attack state- sets attack timer and specified attack's cooldown
+     * @param att AttackType to trigger
+     * @return Returns true on successfull attack trigger.
+     */
+    public boolean attack(AttackType att) {
+        if(!canUseAttack(att))
+            return false;
         
         Attack a= data.getAttack(att);
-        System.out.println(a.getCooldown());
-        
-        this.lastAttack= att;
         this.cooldowns.put(att, System.currentTimeMillis() + a.getCooldown());
         this.attackEnd= System.currentTimeMillis() + a.getDuration();
-        return a.getAttackState();
+        this.lastAttack= att;
+        
+        return true;
+    }
+    
+    public Combat(CombatData data) {
+        this.data= data;
+        attackEnd= 0;
+        cooldowns= data.generateCooldowns();
     }
     
     public Attack getCurrentAttack() {
@@ -64,13 +87,10 @@ public class Combat {
     }
     
     /**
-     * True if attack timer is still running
-     * @return 
+     * Generates next basic attack available (for player and his basic attack switching)
+     * @param current Current basic attack
+     * @return Returns the basic attack after the current
      */
-    public boolean attackTimer() {
-        return attackEnd >= System.currentTimeMillis();
-    }
-    
     public AttackType getNextAttackType(AttackType current) {
         return data.getNextAttackType(current);
     }
