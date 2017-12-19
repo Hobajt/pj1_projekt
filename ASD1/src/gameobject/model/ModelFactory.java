@@ -16,6 +16,10 @@ import java.util.Map;
 import javafx.scene.image.Image;
 import gameobject.state.ObjectState;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import util.Const;
 import util.Rotation;
 import util.resource.ResourceType;
@@ -50,10 +54,13 @@ public class ModelFactory {
      * @return Returns Model based on given ID
      */
     public Model getModel(int id) {
-        loadModel(id);
         if(cache.containsKey(id))
             return cache.get(id);
-        return loadModel(id);
+        return loadModel(id, true);
+    }
+    
+    public void distinctPlayer(ImageView iv) {
+        iv.setEffect(new ColorAdjust(0.2,0,0,1));
     }
     
     /**
@@ -86,8 +93,8 @@ public class ModelFactory {
      * @param id Id of model to load
      * @return Returns the loaded model
      */
-    private Model loadModel(int id) {
-        System.out.format("  -Model::Load: (%d)%n", id);
+    private Model loadModel(int id, boolean cacheIt) {
+        //System.out.format("  -Model::Load: (%d)%n", id);
         validation= true;
         
         Map<ObjectState,List<Image>> data= new HashMap<>();
@@ -104,9 +111,9 @@ public class ModelFactory {
         });
         
         Model m= new ModelComplex(data, validation);
-        if(!cache.containsKey(id))
+        if(!cache.containsKey(id) && cacheIt)
             cache.put(id, m);
-        System.out.format("  -loaded: (%d)%n", id);
+        //System.out.format("  -loaded: (%d)%n", id);
         return m;
     }
     /*
@@ -187,7 +194,7 @@ public class ModelFactory {
         InputStream in= Resources.openStream(ResourceType.MODEL.buildFolderPath(id + "/model.dat"));
         if(in == null)
             return null;
-        System.out.println(ResourceType.MODEL.buildFolderPath(id + "/model.dat"));
+        //System.out.println(ResourceType.MODEL.buildFolderPath(id + "/model.dat"));
         
         try (ObjectInputStream read= new ObjectInputStream(in)) {
             boolean isSimple= read.readBoolean();
@@ -198,8 +205,8 @@ public class ModelFactory {
             
             
         } catch (Exception e) {
-            System.err.format("Model states loading error: (%s)%n", id);
-            e.printStackTrace();
+            //System.err.format("Model states loading error: (%s)%n", id);
+            //e.printStackTrace();
             return null;
         }
     }
@@ -221,7 +228,7 @@ public class ModelFactory {
      */
     public static void SaveModelStates(String id, List<ObjectState> states) {
         
-        System.err.println("MODEL-SAVE");
+        //System.err.println("MODEL-SAVE");
         try (ObjectOutputStream out= new ObjectOutputStream(
                 Resources.save(ResourceType.MODEL.buildFolderPath(id + "/model.dat")))) {
             
@@ -229,7 +236,7 @@ public class ModelFactory {
             out.writeObject(states);
             
         } catch (IOException e) {
-            System.err.println("Error while saving data: " + e.getMessage());
+            //System.err.println("Error while saving data: " + e.getMessage());
         }
     }
 }

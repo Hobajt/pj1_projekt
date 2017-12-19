@@ -12,21 +12,20 @@ import javafx.geometry.Point2D;
  *
  * @author Radek
  */
-public class ColliderData implements Serializable {
+public class ColliderSpecial implements Serializable {
     
     private final int x,y;
     private final int xOff, yOff;
-    //private final double angle;
     
     public double getWidth() {
         return 0;
     }
     
-    public ColliderData(Point2D size, Point2D offset, double angle) {
-        this((int)size.getX(), (int)size.getY(), (int)offset.getX(), (int)offset.getY(), angle);
+    public ColliderSpecial(Point2D size, Point2D offset) {
+        this((int)size.getX(), (int)size.getY(), (int)offset.getX(), (int)offset.getY());
     }
     
-    public ColliderData(int x, int y, int xOff, int yOff, double angle) {
+    public ColliderSpecial(int x, int y, int xOff, int yOff) {
         this.x= x;
         this.y= y;
         

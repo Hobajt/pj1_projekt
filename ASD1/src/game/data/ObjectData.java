@@ -5,6 +5,7 @@
  */
 package game.data;
 
+import game.Game;
 import gameobject.data.GameObjectData;
 import gameobject.data.ObjectDataFactory;
 import util.Transform;
@@ -35,13 +36,11 @@ class ObjectData {
      * @param levelID
      * @throws LevelLoadingException Thrown when file access errors out
      */
-    private void load(String levelID) throws LevelLoadingException {
+    private void load(String levelID, Game game) throws LevelLoadingException {
         
         initialObjects= new HashMap<>();
         spawners= new ArrayList<>();
         playerSpawn= new ArrayList<>();
-        
-        //TODO: rework ObjectData loading- to load from files
         
         List<Transform> lst;
         
@@ -50,11 +49,23 @@ class ObjectData {
         drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(0,350), 180, 19, true);
         drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(0,-350), 180, 19, true);
         
+        drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(100,-120), 180, 5, true);
+        drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(-150,170), 180, 5, true);
+        
         //vertical walls
         GameObjectData gd= ObjectDataFactory.inst().getData(8);
         drawObjectLine(gd, new Point2D(560,0), -90, 13, false);
         drawObjectLine(gd, new Point2D(-560,0), -90, 13, false);
         
+        Random r= new Random();
+        List<Transform> spawn = new ArrayList<>();
+        int enemyCount= r.nextInt(5)+5;
+        for(int i= 0; i < enemyCount; i++) {
+            spawn.add(new Transform(randomPoint(r, -500, 500, -270, 270)));
+        }
+        initialObjects.put(1, spawn);
+        
+        game.setEnemyCount(enemyCount);
         /*
         drawObjectLine(ObjectDataFactory.inst().getData(4), new Point2D(-20,150), 180, 4);
         
@@ -68,15 +79,12 @@ class ObjectData {
         lst.add(new Transform(end));
         initialObjects.put(9, lst);*/
         
-        lst= new ArrayList<>();
-        lst.add(new Transform(-90,-150));
-        initialObjects.put(6, lst);
-        
+        /*
         lst= new ArrayList<>();
         lst.add(new Transform(-50,60));
         lst.add(new Transform(-60,0));
         //lst.add(new Transform(-100,0));
-        initialObjects.put(1, lst);
+        initialObjects.put(1, lst);*/
         
         /*
         lst= new ArrayList<>();
@@ -106,12 +114,12 @@ class ObjectData {
      * @param levelID Identification of the level
      * @throws LevelLoadingException Thrown when File reading fails
      */
-    public ObjectData(String levelID) throws LevelLoadingException {
+    public ObjectData(String levelID, Game game) throws LevelLoadingException {
         if(levelID == null)
             levelID= "default";
         
-        load(levelID);
-        System.out.println("--Object data loading--");
+        load(levelID, game);
+        //System.out.println("--Object data loading--");
     }
 
     /**
@@ -193,5 +201,11 @@ class ObjectData {
         return new Point2D(sOff.multiply(amount).getX() * Math.cos(angle),
                 sOff.multiply(amount).getY() * Math.sin(angle))
                 .add(startPos);
+    }
+    
+    private Point2D randomPoint(Random r, int xMin, int xMax, int yMin, int yMax) {
+        xMin= Math.abs(xMin);
+        yMin= Math.abs(yMin);
+        return new Point2D(r.nextInt(xMax+xMin)-xMin, r.nextInt(yMax+yMin)-yMin);
     }
 }

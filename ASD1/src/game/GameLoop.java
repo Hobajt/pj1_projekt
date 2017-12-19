@@ -30,13 +30,13 @@ public class GameLoop extends AnimationTimer {
         
         super.start();
         lastTick= System.nanoTime();
-        System.out.println("--Game started--");
+        //System.out.println("--Game started--");
     }
 
     @Override
     public void stop() {
         super.stop();
-        System.out.println("--Game stopped--");
+        //System.out.println("--Game stopped--");
     }
     
     @Override

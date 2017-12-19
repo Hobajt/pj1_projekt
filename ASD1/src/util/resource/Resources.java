@@ -55,7 +55,7 @@ public class Resources {
     }
     
     public static OutputStream save(String fullpath) throws IOException {
-        System.err.println("SAVING DATA");
+        //System.err.println("SAVING DATA");
         return Files.newOutputStream(Paths.get("res/" + fullpath));
     }
     

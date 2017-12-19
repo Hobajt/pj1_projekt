@@ -7,6 +7,7 @@ package gameobject.data;
 
 import gameobject.combat.CombatData;
 import java.io.Serializable;
+import util.Const;
 
 /**
  * Data class that describes creatures stat values
@@ -19,16 +20,13 @@ public class StatsData implements Serializable {
     private final int health;
     private final float moveSpeed;
     private final CombatData combat;
-
-    private static final int BASE_HEALTH= 50;
-    private static final float BASE_MS= 2;
     
     public StatsData() {
         this(new CombatData());
     }
     
     public StatsData(CombatData cmb) {
-        this(BASE_HEALTH, BASE_MS, cmb);
+        this(Const.BASE_HEALTH, Const.BASE_MS, cmb);
     }
     
     public StatsData(int health, float ms) {

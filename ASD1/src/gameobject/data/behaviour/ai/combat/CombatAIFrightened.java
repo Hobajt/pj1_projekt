@@ -24,7 +24,7 @@ public class CombatAIFrightened extends CombatAI {
         return false;
     }
 
-    public CombatAIFrightened(GameObject owner) {
-        super(owner);
+    public CombatAIFrightened(CombatAIType type, int dDistance, GameObject owner) {
+        super(type, dDistance, owner);
     }
 }

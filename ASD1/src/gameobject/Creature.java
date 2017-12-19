@@ -111,7 +111,9 @@ public class Creature extends GameObject {
      * @param att Attack that just started
      */
     public void attack(AttackType att) {
-        getStateHandler().setAttack(getAttack(att));
+        Attack attack= getAttack(att);
+        getStateHandler().setAttack(attack);
         stats.combat().attack(att);
+        attack.execute(this);
     }
 }

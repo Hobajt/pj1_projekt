@@ -38,7 +38,9 @@ class ScreenObject {
         
         if(parent != null)
             parent.getChildren().remove(img);
-        p.getChildren().add(img);
+        if(p != null) {
+            p.getChildren().add(img);
+        }
         parent= p;
     }
     
@@ -51,8 +53,15 @@ class ScreenObject {
         Point2D screenPos= Window.inst().getScreenPoint(center, goPosition).subtract(model.getSizeOffset());
         img.setX(screenPos.getX());
         img.setY(screenPos.getY());
-        //img.setTranslateX(screenPos.getX() - img.getTranslateX());
-        //img.setTranslateY(screenPos.getY() - img.getTranslateY());
+        
+        Point2D sSize= Window.inst().getScreenSize();
+        if(screenPos.getX() < -60 || screenPos.getX() > sSize.getX()+75 ||
+                screenPos.getY() < -75 || screenPos.getY() > sSize.getY()+75) {
+            
+            img.setVisible(false);
+        }
+        else
+            img.setVisible(true);
     }
     
     /**

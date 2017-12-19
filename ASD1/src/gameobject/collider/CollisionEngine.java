@@ -25,6 +25,7 @@ public class CollisionEngine {
     
     private CollisionEngine() {
         this.grid= new HashMap<>();
+        this.exclude= new ArrayList<>();
     }
     
     public static CollisionEngine inst() {
@@ -39,9 +40,10 @@ public class CollisionEngine {
     //devides level objects into grid of squares- each object is member of one square
     private final Map<Integer, Map<Integer, List<GameObject>>> grid;
     
-    //TODO: Reduce size
-    private final int GRID_X= 100;
-    private final int GRID_Y= 100;
+    private final List<GameObject> exclude;
+    
+    private final int GRID_X= 50;
+    private final int GRID_Y= 50;
     
     /**
      * Periodically updates Collision grid, based on it's inner tickTimer
@@ -54,6 +56,10 @@ public class CollisionEngine {
         }
     }
 
+    public void remove(GameObject go) {
+        exclude.add(go);
+    }
+    
     /**
      * Checks for any collisions of given <b>dynamic</b> gameObject.<br>
      * Detection is only done within gameObject's square and all it's neighboring
@@ -89,9 +95,10 @@ public class CollisionEngine {
     private void squareCheck(GameObject go, int x, int y) throws NullPointerException {
         List<GameObject> inSquare= grid.get(y).get(x);
         
-        for(GameObject o : inSquare) {
-            collisionCheck(go, o);
-        }
+        inSquare.forEach((o) -> {
+            if(!exclude.contains(o))
+                collisionCheck(go, o);
+        });
     }
     
     /**
@@ -121,8 +128,11 @@ public class CollisionEngine {
         
         assignToGrid(Player.inst().getObject());
         for(GameObject o : objs) {
-            assignToGrid(o);
+            if(!exclude.contains(o))
+                assignToGrid(o);
         }
+        
+        exclude.clear();
     }
     
     /**
@@ -165,27 +175,45 @@ public class CollisionEngine {
     
     /**
      * Collision check for a single object within 3x3 grid
-     * @param pos
-     * @param cd ColliderData of the object
+     * @param origin
+     * @param cd ColliderSpecial of the object
      * @return Returns List of objects that are colliding with given object
      */
-    public List<GameObject> detectCollisions(Point2D pos, ColliderData cd) {
+    public List<GameObject> detectCollisions(Point2D origin, ColliderSpecial cd) {
         
-        Index ind= getObjectsIndex(new Point2D(cd.getX(), cd.getY()));
-        return squareDetect(pos, cd, ind.x, ind.y);
+        Index ind= getObjectsIndex(new Point2D(origin.getX(), origin.getY()));
+        
+        List<GameObject> ret= new ArrayList<>();
+        
+        for(int x= ind.x-1; x <= ind.x+1; x++) {
+            for(int y= ind.y-1; y <= ind.y+1; y++) {
+                try {
+                    List<GameObject> gs= squareDetect(origin, cd, ind.x, ind.y);
+                    for(GameObject g : gs) {
+                        if(!ret.contains(g))
+                            ret.add(g);
+                    }
+                } catch (NullPointerException e) {} //catches when mid square is 0 or last index
+            }
+        }
+        return ret;
     }
-    private List<GameObject> squareDetect(Point2D pos, ColliderData cd, int x, int y) throws NullPointerException {
+    
+    private List<GameObject> squareDetect(Point2D pos, ColliderSpecial cd, int x, int y) throws NullPointerException {
         List<GameObject> inSquare= grid.get(y).get(x);
         
         List<GameObject> l= new ArrayList<>();
         for(GameObject o : inSquare) {
-            GameObject g= collisionDetect(pos, cd, o);
-            if(g != null)
-                l.add(g);
+            if(!exclude.contains(o)) {
+                GameObject g= collisionDetect(pos, cd, o);
+                if(g != null)
+                    l.add(g);
+            }
         }
         return l;
     }
-    private GameObject collisionDetect(Point2D pos, ColliderData cd, GameObject g2) {
+    
+    private GameObject collisionDetect(Point2D pos, ColliderSpecial cd, GameObject g2) {
         
         if(g2.getData().getCollider().detectCollision(pos, cd, g2))
             return g2;

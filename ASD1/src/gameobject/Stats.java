@@ -7,6 +7,7 @@ package gameobject;
 
 import gameobject.combat.Combat;
 import gameobject.data.StatsData;
+import javafx.geometry.Point2D;
 
 /**
  * Stats representation on instance of Creature
@@ -22,6 +23,7 @@ public class Stats {
     public Stats(StatsData data) {
         this.data= data;
         this.cmb= new Combat(data.getCombat());
+        currHealth= data.getHealth();
     }
 
     public int getCurrHealth() {
@@ -31,5 +33,16 @@ public class Stats {
     
     public Combat combat() {
         return cmb;
+    }
+    
+    public boolean dealDamage(int dmg) {
+        this.currHealth -= dmg;
+        return (currHealth <= 0);
+    }
+    
+    public boolean dealDamage(int dmg, Point2D pos) {
+        this.currHealth -= dmg;
+        PrintController.inst().printMessage(dmg + "", pos);
+        return (currHealth <= 0);
     }
 }

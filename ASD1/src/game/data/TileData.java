@@ -41,7 +41,7 @@ public class TileData {
     }
     
     TileData(String levelID) throws LevelLoadingException {
-        System.out.println("--Tile data loading--");
+        //System.out.println("--Tile data loading--");
         if(levelID == null)
             levelID= "default";
         
@@ -51,7 +51,7 @@ public class TileData {
     public static void saveData() {
         int k= 0;
         try (DataOutputStream out = new DataOutputStream(Resources.save(PATH))) {
-            System.out.println(PATH);
+            //System.out.println(PATH);
             
             List<Integer> map= Arrays.asList(
                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -86,9 +86,9 @@ public class TileData {
                 out.writeInt(n);
             }*/
         } catch (IOException e) {
-            System.err.println("Error during tileset saving");
+            //System.err.println("Error during tileset saving");
         }
-        System.out.println("done " + k);
+        //System.out.println("done " + k);
     }
 
     public List<Integer> getTiles() {

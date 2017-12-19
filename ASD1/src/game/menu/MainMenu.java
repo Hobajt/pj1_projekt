@@ -28,6 +28,9 @@ public class MainMenu implements Menu {
 
     private MenuButton innerState;              //state for cursor position
     
+    private ControlList ctrls;
+    private boolean innerBlock;            //when one button blocks the others
+    
     /**
      * Scales the menu to respond to current screen size
      */
@@ -53,14 +56,14 @@ public class MainMenu implements Menu {
         switch(c) {
             case W:
             case UP:
-                if(buttons.indexOf(innerState) > 0) {
+                if(buttons.indexOf(innerState) > 0 && !innerBlock) {
                     innerState= buttons.get(buttons.indexOf(innerState)-1);
                     updateStyles();
                 }
                 break;
             case S:
             case DOWN:
-                if(buttons.indexOf(innerState) < buttons.size()-1) {
+                if(buttons.indexOf(innerState) < buttons.size()-1 && !innerBlock) {
                     innerState= buttons.get(buttons.indexOf(innerState)+1);
                     updateStyles();
                 }
@@ -103,13 +106,27 @@ public class MainMenu implements Menu {
         ));
         
         appendButton(new MenuButton(   
-                "Quit", quitApp, Const.BUTTON1_S1, 
+                "Controls", this::showControls, Const.BUTTON1_S1, 
                 0.5, 0.375, 0.15, 0.05
         ));
+        
+        appendButton(new MenuButton(   
+                "Quit", quitApp, Const.BUTTON1_S1, 
+                0.5, 0.450, 0.15, 0.05
+        ));
+        
+        ctrls= new ControlList(this, parent);
+        ctrls.visible(false);
         
         innerState= buttons.get(0);
         updateStyles();
         l= this::listenerNotification;
+    }
+    
+    private void showControls() {
+        innerBlock= !innerBlock;
+        
+        ctrls.visible(innerBlock);
     }
     
     /**
@@ -134,4 +151,10 @@ public class MainMenu implements Menu {
         buttons.add(b);
         parent.getChildren().add(b.getButton());
     }
+
+    void setInnerBlock(boolean innerBlock) {
+        this.innerBlock = innerBlock;
+    }
+    
+    
 }

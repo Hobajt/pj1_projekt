@@ -23,6 +23,7 @@ import util.resource.Resources;
 import gameobject.data.behaviour.BehaviourData;
 import gameobject.data.behaviour.ai.BehaviourDataAI;
 import gameobject.data.behaviour.ai.idle.IdleAIData;
+import gameobject.data.behaviour.projectile.BehaviourDataProjectile;
 
 /**
  * Loads GameObjectData objects from local files and caches them
@@ -56,7 +57,7 @@ public class ObjectDataFactory {
      * @return Returns the loaded gameObjectData
      */
     private GameObjectData loadData(int id) {
-        System.out.format("  -ObjData::Load: (%d)%n", id);
+        //System.out.format("  -ObjData::Load: (%d)%n", id);
         
         GameObjectData gd= null;
         try (ObjectInputStream load= new ObjectInputStream(
@@ -66,11 +67,11 @@ public class ObjectDataFactory {
             cache.put(id, gd);
             
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
-        System.out.format("  -loaded: (%d)%n", id);
+        //System.out.format("  -loaded: (%d)%n", id);
         return gd;
     }
     
@@ -103,13 +104,13 @@ public class ObjectDataFactory {
                          ColliderType.CREATURE, new Point2D(0,
                             -ModelFactory.inst().getModel(0).getSizeOffset().getY()*(0.95-Const.IMG_CREATURE_SCALE)),
                         false), new StatsData(), 
-                        new BehaviourDataAI(CombatAIType.AGGRESSIVE, new IdleAIData(0.1f, 45)));
+                        new BehaviourDataAI(125, CombatAIType.AGGRESSIVE, new IdleAIData(0.1f, 45)));
         
         saveDataHelper(2, "Creature 2", FlagsType.CREATURE, 0, 
                 ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(2),
                         ColliderType.NORMAL, Point2D.ZERO, false), new StatsData());
         
-        
+        //gameobjects
         saveDataHelper(4, "Tile4", FlagsType.STATIC, 4, 
                 ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(4),
                         ColliderType.HALF_Y, new Point2D(0, -10), false), null);
@@ -133,6 +134,11 @@ public class ObjectDataFactory {
         saveDataHelper(9, "Tile5", FlagsType.STATIC, 9, 
                 ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(9),
                         ColliderType.HALF_Y, Point2D.ZERO, false), null);
+        
+        saveDataHelper(10, "Projectile", FlagsType.PREFAB, 10, 
+                ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(10),
+                        ColliderType.MIDWAY, Point2D.ZERO, true), null,
+                new BehaviourDataProjectile(5,15));
     }
     
     private void saveDataHelper(int id, String name, FlagsType t, int mID, Collider collider, StatsData st) {
@@ -168,7 +174,7 @@ public class ObjectDataFactory {
             out.writeObject(data);
             
         } catch (IOException e) {
-            System.err.println("Error while saving data: " + e.getMessage());
+            //System.err.println("Error while saving data: " + e.getMessage());
         }
     }
 }

@@ -22,7 +22,6 @@ public class IdleAIRoutines extends IdleAI {
 
     @Override
     public AIState update(AIState state) {
-        //TODO: IdleAIRoutines
         return AIState.IDLE;
     }
     

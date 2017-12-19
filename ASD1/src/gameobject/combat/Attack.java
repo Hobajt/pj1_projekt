@@ -5,7 +5,7 @@
  */
 package gameobject.combat;
 
-import gameobject.collider.Collider;
+import gameobject.GameObject;
 import gameobject.state.ObjectState;
 import javafx.geometry.Point2D;
 import util.Rotation;
@@ -40,6 +40,8 @@ public abstract class Attack {
      * @return Returns new rotation for this Creature during attack
      */
     public abstract Rotation getRotation(int progress, Rotation inp, Rotation current);
+    
+    public abstract void execute(GameObject owner);
     
     /**
      * Returns object state, that will be shown, when this attack happens

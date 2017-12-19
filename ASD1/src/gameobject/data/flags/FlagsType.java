@@ -11,6 +11,6 @@ package gameobject.data.flags;
  */
 public enum FlagsType {
     STATIC,
-    CREATURE;
-    //TODO: [Flags] add some more
+    CREATURE,
+    PREFAB;
 }

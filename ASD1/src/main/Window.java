@@ -30,13 +30,15 @@ public class Window implements Resizable {
         groups.put(GroupType.STATIC, new Group());
         groups.put(GroupType.IN_FRONT, new Group());
         groups.put(GroupType.MENU, new Group());
+        groups.put(GroupType.TEXT, new Group());
         
         groups.get(GroupType.ROOT).getChildren().addAll(
             groups.get(GroupType.BACK),
             groups.get(GroupType.BEHIND),
             groups.get(GroupType.STATIC),
             groups.get(GroupType.IN_FRONT),
-            groups.get(GroupType.MENU)
+            groups.get(GroupType.MENU),
+            groups.get(GroupType.TEXT)
         );
         
         scene= new Scene(groups.get(GroupType.ROOT), Const.BASE_WIDTH, Const.BASE_HEIGHT, Const.BACKGROUND);
@@ -124,7 +126,8 @@ public class Window implements Resizable {
         BEHIND(2),      //Group for dynamic gameObjects to draw behind static
         STATIC(3),      //Static objects layer
         IN_FRONT(4),    //For dynamic to draw above static
-        MENU(5);        //Menu layer, above all else
+        MENU(5),        //Menu layer, above all else
+        TEXT(6);        //labels and stuff
         
         int val;
         

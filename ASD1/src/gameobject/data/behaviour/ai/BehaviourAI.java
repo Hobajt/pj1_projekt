@@ -41,13 +41,18 @@ public class BehaviourAI implements Behaviour {
         //update state and movement
         owner.update(state.getMoveDir(), Rotation.getByMoveDir(state.getMoveDir()));
     }
+    
+    @Override
+    public void trigger(GameObject col) {
+        return;
+    }
 
     BehaviourAI(BehaviourDataAI data, GameObject owner) {
         this.data= data;
         this.owner= (Creature)owner;
         
         this.idle= IdleAI.createNew(data.getIdle(), owner);
-        this.combat= CombatAI.createNew(data.getAggresivity(), owner);
+        this.combat= CombatAI.createNew(data.getAggresivity(), data.getDetectDistance(), owner);
         state= AIState.IDLE;
     }
 }

@@ -6,6 +6,8 @@
 package gameobject.player;
 
 import gameobject.Creature;
+import gameobject.model.ModelFactory;
+import main.FXApp;
 
 /**
  * Gameobject representing player + some additional player setup

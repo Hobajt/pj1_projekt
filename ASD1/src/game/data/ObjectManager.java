@@ -10,6 +10,7 @@ import gameobject.Creature;
 import util.Rotation;
 import gameobject.GameObject;
 import gameobject.ObjectFactory;
+import gameobject.collider.CollisionEngine;
 import gameobject.player.Player;
 import util.Transform;
 import java.util.ArrayList;
@@ -31,10 +32,26 @@ public class ObjectManager {
     private Player player;
     
     public void updateBehaviours() {
-        for(GameObject g : objs) {
-            if(!g.getData().getFlags().isDynamic())
-                return;
-            g.updateBehaviour();
+        int n= 0;
+        for(int i= objs.size()-1; i >= 0; i--) {
+            try {
+                if(!objs.get(i).getData().getFlags().isDynamic())
+                    continue;
+
+                n++;
+                objs.get(i).updateBehaviour();
+            } catch (IndexOutOfBoundsException e) {}
+        }
+        //System.out.println(n > 0 ? "yup" : "nope");
+    }
+    
+    public void destroy(GameObject go) {
+        game.getGameLoop().getView().remove(go);
+        CollisionEngine.inst().remove(go);
+        objs.remove(go);
+        if(go instanceof Creature) {
+            game.enemyKilled();
+            System.out.println(go);
         }
     }
     
@@ -47,7 +64,7 @@ public class ObjectManager {
     public GameObject instantiate(int gdID, Transform trans) {
         
         //create it
-        GameObject gob= ObjectFactory.inst().createNew(game.getUID(), 0, trans);
+        GameObject gob= ObjectFactory.inst().createNew(game.getUID(), gdID, trans);
         
         //check if is dynamic
         if(!gob.getData().getFlags().isDynamic())
@@ -55,7 +72,16 @@ public class ObjectManager {
         
         //add to list
         objs.add(gob);
+        
         return gob;
+    }
+    
+    public void instantiatePrefab(int gID, Transform tr, GameObject owner) {
+        GameObject pfb= instantiate(gID, tr);
+        
+        if(pfb != null) {
+            pfb.customBehavInit(owner);
+        }
     }
     
     /**
@@ -105,7 +131,7 @@ public class ObjectManager {
             }
         }
         
-        System.out.format("--ObjManager reloaded- Dynamic: (%d), Static: (%d)--%n", dCounter, sCounter);
+        //System.out.format("--ObjManager reloaded- Dynamic: (%d), Static: (%d)--%n", dCounter, sCounter);
     }
     
     /**
@@ -140,7 +166,7 @@ public class ObjectManager {
         this.game= game;
         this.data= data.getObjectData();
         objs= new ArrayList<>();
-        System.out.println("--ObjManager initialized--");
+        //System.out.println("--ObjManager initialized--");
     }
 
     public List<GameObject> getObjs() {

@@ -12,6 +12,7 @@ import javafx.geometry.Point2D;
 import gameobject.state.ObjectState;
 import util.Rotation;
 import gameobject.data.behaviour.Behaviour;
+import gameobject.data.behaviour.projectile.BehaviourDataProjectile;
 
 /**
  * Instance of GameObject within the game
@@ -22,7 +23,7 @@ public class GameObject {
     private final int uniqueID;
     
     private final Transform transform;
-    private final Behaviour behaviour;
+    private Behaviour behaviour;
     private final GameObjectData data;
     private final ObjectStateHandler state;
     
@@ -66,11 +67,30 @@ public class GameObject {
     }
 
     /**
+     * Signals that this objects trigger (on collision) has been enabled.
+     * Forwards data to behaviour.
+     * @param col 
+     */
+    public void triggerTriggered(GameObject col) {
+        if(this.behaviour != null)
+            behaviour.trigger(col);
+    }
+    
+    /**
      * Helper method that creates behaviour instance out of constructor
      * @return 
      */
     private Behaviour initBehaviour() {
-            return (data.getBehaviour() != null) ? data.getBehaviour().createInstance(this) : null;
+        return (data.getBehaviour() != null) ? data.getBehaviour().createInstance(this) : null;
+    }
+    
+    public void customBehavInit(GameObject owner) {
+        if(data.getBehaviour() == null)
+            return;
+        
+        if(data.getBehaviour() instanceof BehaviourDataProjectile) {
+            this.behaviour= ((BehaviourDataProjectile)data.getBehaviour()).createInstance(this, owner, owner.getTransform().getRotation());
+        }
     }
     
     public int getUniqueID() {

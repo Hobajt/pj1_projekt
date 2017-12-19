@@ -6,6 +6,8 @@
 package game.view;
 
 import gameobject.GameObject;
+import gameobject.PrintController;
+import gameobject.model.ModelFactory;
 import gameobject.player.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import main.FXApp;
+import main.Resizable;
 import main.Window;
 import util.Const;
 
@@ -21,10 +25,11 @@ import util.Const;
  * Manages ScreenObjects updates and recylcing
  * @author Radek
  */
-class ViewObjectManager {
+class ViewObjectManager implements Resizable {
     
     private final GameView view;
     
+    private boolean playerApplied;
     private ScreenObject player;
     
     private final Map<Integer, ScreenObject> imgs;
@@ -37,11 +42,24 @@ class ViewObjectManager {
     private int orderTimer;
     
     private final Group tiles;
+
+    @Override
+    public void onResize() {
+        clearAll();
+    }
+    
+    private void clearAll() {
+        for(ScreenObject s : imgs.values()) {
+            s.changeParent(null);
+        }
+        imgs.clear();
+    }
     
     public ViewObjectManager(GameView view) {
         this.view= view;
         
         player= null;
+        playerApplied= false;
         imgs= new HashMap<>();
         front= Window.inst().getGroup(Window.GroupType.IN_FRONT);
         stat= Window.inst().getGroup(Window.GroupType.STATIC);
@@ -49,6 +67,14 @@ class ViewObjectManager {
         filterTimer= 0;
         view.getTileManager().init();
         tiles= view.getTileManager().getTileset();
+        FXApp.inst().resizeObserver().addListener(this);
+    }
+    
+    public void remove(GameObject g) {
+        ScreenObject o= imgs.remove(g.getUniqueID());
+        if(o != null) {
+            o.changeParent(null);
+        }
     }
     
     /**
@@ -58,7 +84,14 @@ class ViewObjectManager {
      */
     public Point2D update(List<GameObject> objs) {
         
+        if(!playerApplied && player != null) {
+            ModelFactory.inst().distinctPlayer(player.getImg());
+            playerApplied= true;
+        }
+        
         updatePlayer();
+        
+        Point2D plPos= player.getGameObject().getTransform().getPosition();
         
         //every Nth frame, filter out old ScreenObjects that are no longer relevant
         if(++filterTimer > Const.T_SCREEN_FILTER) {
@@ -67,21 +100,17 @@ class ViewObjectManager {
         }
         
         for(GameObject g : objs) {
-            
             ScreenObject s= imgs.get(g.getUniqueID());
             
             //add ScreenObjects for new GameObjects
             if(s == null) {
                 imgs.put(g.getUniqueID(), new ScreenObject(g, g.getData().getFlags().isDynamic() ? front : stat));
-                System.out.println("-ViewManager::Adding " + g.getUniqueID());
+                //System.out.println("-ViewManager::Adding " + g.getUniqueID());
                 s= imgs.get(g.getUniqueID());
             }
             
             //update position
-            s.updatePosition(
-                    player.getGameObject().getTransform().getPosition(), 
-                    g.getTransform().getPosition()
-            );
+            s.updatePosition(plPos, g.getTransform().getPosition());
             
             //update animation
             s.setImage(g.getState(), g.getTransform().getRotation());
@@ -93,9 +122,20 @@ class ViewObjectManager {
             orderTimer= 0;
         } 
         
-        updateTilePosition(player.getGameObject().getTransform().getPosition());
+        PrintController.inst().update(plPos);
         
-        return player.getGameObject().getTransform().getPosition();
+        updateTilePosition(plPos);
+        
+        return plPos;
+    }
+    
+    public void reset(boolean reset) {
+        if(reset) {
+            clearAll();
+            player.changeParent(null);
+            player= null;
+            playerApplied= false;
+        }
     }
     
     private void updateTilePosition(Point2D center) {
@@ -157,14 +197,14 @@ class ViewObjectManager {
         List<Integer> toRemove= new ArrayList<>();
         
         for(Entry<Integer, ScreenObject> entry : imgs.entrySet()) {
-            if(entry.getValue().getGameObject().distance(player.getGameObject()) > view.getRenderRadius() * 1.3) {
+            if(entry.getValue().getGameObject().distance(player.getGameObject()) > view.getRenderRadius() * 2) {
                 toRemove.add(entry.getKey());
             }
         }
         
         for(Integer id : toRemove) {
             imgs.remove(id);
-            System.out.println("-ViewManager::Removing " + id);
+            //System.out.println("-ViewManager::Removing " + id);
         }
     }
     

@@ -68,4 +68,8 @@ public class ModelComplex extends Model {
             return IMAGE_MISSING;
         }
     }
+
+    Map<ObjectState, List<Image>> getImgs() {
+        return imgs;
+    }
 }

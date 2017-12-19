@@ -22,6 +22,9 @@ public class Const {
     public static final int BASE_HEIGHT= 480;
     public static final Color BACKGROUND= Color.BLACK;
     
+    public static final int BASE_HEALTH= 50;
+    public static final float BASE_MS= 2;
+    
     public static final int MOVE_BREAK_DISTANCE= 6;     //pixel offset for position comparison
     
     public static final double IMG_CREATURE_SCALE= 0.6; //collider scaling for creatures
@@ -31,7 +34,6 @@ public class Const {
     public static final int T_SCREEN_ORDER= 30;         //period for screen objects order changing
     public static final int T_SCREEN_FILTER= 20;        //period for screen object dumping
     
-    //TODO: [Resources] Rework button styles - add some factory and load from file 
     public static final String BUTTON1_S1= ""
             + " -fx-background-color: yellow;"
             + " -fx-font: 16px \"Serif\";"

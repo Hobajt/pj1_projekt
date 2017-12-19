@@ -34,11 +34,22 @@ public class TileManager {
         
     }
     
+    public void reset(boolean reset) {
+        if(reset) {
+            Window.inst().getGroup(Window.GroupType.BACK).getChildren().remove(tileset);
+            tileset.getChildren().clear();
+            tiles.clear();
+            init= false;
+            
+            init();
+        }
+    }
+    
     public void init() {
         if(init)
             return;
         init= true;
-        System.out.println("--Tile Manager Initialized--");
+        //System.out.println("--Tile Manager Initialized--");
         
         int n= 0;
         int xOff= data.getxSize()/2;
@@ -56,7 +67,7 @@ public class TileManager {
             }
         }
         
-        System.out.println("CYCLES: " +n );
+       
         Window.inst().getGroup(Window.GroupType.BACK).getChildren().add(tileset);
         /*
         for(Integer n : data.getTiles()) {
@@ -71,7 +82,6 @@ public class TileManager {
             xPos += iv.getImage().getWidth();
             yPos += iv.getImage().getHeight();
             if(++xCounter >= data.getxSize()) {
-                System.out.println("BREAKBREAKBREAKBREAKBREAKBREAKBREAKBREAKBREAK: " + yPos);
                 xCounter= 0;
                 xPos= 0;
                 yPos += iv.getImage().getHeight();

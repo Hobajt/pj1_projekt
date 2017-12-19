@@ -5,9 +5,7 @@
  */
 package gameobject.combat;
 
-import gameobject.collider.ColliderBuilder;
-import gameobject.collider.ColliderType;
-import gameobject.data.ObjectDataFactory;
+import gameobject.collider.ColliderSpecial;
 import gameobject.state.ObjectState;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,14 +45,16 @@ public class AttackFactory {
     private AttackFactory() {
         vals= new HashMap<>();
         
-        vals.put(AttackType.MELEE, new AttackSimple(false, 25, 600, 800, ObjectState.MELEE, new Point2D(1,1), true));
+        vals.put(AttackType.MELEE, new AttackSimple(false, 25, 600, 800, ObjectState.MELEE, new Point2D(1,1), true, 
+        new ColliderSpecial(45,45,0,0)));
         
         //Co budu delat s colliderama?? -- potrebuju je podle utoku vzdy jen nahodit na jeden vypocet
         //Pridat do CollisionEngine metodu na rychle porovnani jednoho prvku (v ramci 3x3 bloku)
         
-        vals.put(AttackType.RANGED, new AttackSimple(false, 10, 550, 550, ObjectState.RANGED, Point2D.ZERO, true));
+        vals.put(AttackType.RANGED, new AttackSimple(false, 10, 550, 550, ObjectState.RANGED, Point2D.ZERO, false,
+        10));
         
-        vals.put(AttackType.CHARGE, new AttackSimple(false, 0, 250, 8000, ObjectState.RANGED, new Point2D(8,8), true));
+        vals.put(AttackType.CHARGE, new AttackSimple(false, 0, 250, 8000, ObjectState.RANGED, new Point2D(8,8), true, null));
     }
     
     private void meleeAttack() {

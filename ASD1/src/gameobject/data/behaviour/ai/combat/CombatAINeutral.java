@@ -24,7 +24,7 @@ public class CombatAINeutral extends CombatAI {
         return false;
     }
 
-    public CombatAINeutral(GameObject owner) {
-        super(owner);
+    public CombatAINeutral(CombatAIType type, int dDistance, GameObject owner) {
+        super(type, dDistance, owner);
     }
 }

@@ -5,11 +5,17 @@
  */
 package gameobject.combat;
 
-import gameobject.collider.ColliderData;
-import gameobject.data.GameObjectData;
+import gameobject.Creature;
+import gameobject.GameObject;
+import gameobject.collider.ColliderSpecial;
+import gameobject.collider.CollisionEngine;
 import gameobject.state.ObjectState;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Point2D;
+import main.FXApp;
 import util.Rotation;
+import util.Transform;
 
 /**
  *
@@ -21,6 +27,8 @@ public class AttackSimple extends Attack {
     
     private final Point2D move;             //allows specific movement patterns during cast time
     private final boolean freezeRotation;   //false == Creature cannot turn during cast time
+    
+    private final Object ref;
     
     /**
      * Specifies which animation to use. Returns the same value throughout the 
@@ -60,12 +68,56 @@ public class AttackSimple extends Attack {
         return freezeRotation ? current : inp;
     }
     
+    /**
+     * Attack functionality
+     * @param owner 
+     */
+    @Override
+    public void execute(GameObject owner) {
+        
+        Point2D attPos= owner.getTransform().getPosition();
+        
+        if(ref instanceof ColliderSpecial) {
+            melee(owner, attPos.add(Rotation.getMove(owner.getTransform().getRotation()).multiply(10)));
+        }
+        else if(ref instanceof Integer) {
+            ranged(owner, attPos.add(Rotation.getMove(owner.getTransform().getRotation()).multiply(30)));
+        }
+    }
+    
+    private void ranged(GameObject owner, Point2D attPos) {
+        Point2D offset= Rotation.getMove(owner.getTransform().getRotation()).multiply(30);
+        Transform tr= new Transform(attPos, owner.getTransform().getRotation());
+        FXApp.inst().createPrefab((int)ref, tr, owner);
+    }
+    
+    private void melee(GameObject owner, Point2D attPos) {
+        List<GameObject> hit= CollisionEngine.inst().detectCollisions(attPos, (ColliderSpecial)ref);
+        if(hit.size() > 0) {
+            List<GameObject> dead= new ArrayList<>();
+            for(GameObject h : hit) {
+                if(h == owner)
+                    continue;
+                
+                if(h instanceof Creature) {
+                    if(((Creature)h).getStats().dealDamage(getBaseValue(), h.getTransform().getPosition()))
+                        dead.add(h);
+                }
+            }
+            for(GameObject g : dead) {
+                FXApp.inst().destroyObject(g);
+            }
+        }
+    }
+    
     public AttackSimple(boolean special, int baseValue, int duration, int cooldown, 
-            ObjectState attackState, Point2D move, boolean freezeRotation) {
+            ObjectState attackState, Point2D move, boolean freezeRotation, Object ref) {
         
         super(special, baseValue, duration, cooldown);
         this.attackState = attackState;
         this.move = move;
         this.freezeRotation = freezeRotation;
+        this.ref= ref;
+        
     }
 }

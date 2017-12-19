@@ -19,7 +19,7 @@ public class Collider implements Serializable {
     private final int offX, offY;
     private final int x,y;
 
-    public boolean detectCollision(Point2D pos, ColliderData cd, GameObject me) {
+    public boolean detectCollision(Point2D pos, ColliderSpecial cd, GameObject me) {
         double xCol, yCol;
         Point2D dif= me.getTransform().getPosition().subtract(cd.getPos(pos));
         
@@ -44,11 +44,6 @@ public class Collider implements Serializable {
      */
     public Point2D checkCollision(Collision col) {
         
-        if(validateTrigger(col)) {
-            //do trigger stuff
-            return null;
-        }
-        
         Collider other= col.getOtherCollider();
         double xCol, yCol;
         Point2D dif= col.getColDifference();
@@ -63,19 +58,43 @@ public class Collider implements Serializable {
         if(yCol > 0)
             return null;
             
+        
+        //check for triggers
+        GameObject trg= validateTrigger(col);
+        if(trg != null) {
+            triggerTrigger(trg, col);
+            return null;
+        }
+        
         //returns the closest vector out of the collision
         if(xCol > yCol)
             return new Point2D(col.isOtherBehindXAxis() ? -xCol : xCol, 0);
         else
             return new Point2D(0, col.isOtherBehindYAxis() ? -yCol : yCol);
     }
+    
+    private void triggerTrigger(GameObject trg, Collision col) {
+        trg.triggerTriggered((trg == col.getThis()) ? col.getOther() : col.getThis());
+    }
+    
     /**
-     * Checks whether any of these colliders is a trigger
+     * Checks whether one (only 1, not 2) of these colliders is a trigger
      * @param col Collision data
      * @return Returns false, if none of them is trigger
      */
-    private boolean validateTrigger(Collision col) {
-        return false;
+    private GameObject validateTrigger(Collision col) {
+        GameObject r= null;
+        if(col.getThis().getData().getCollider().isTrigger())
+            r= col.getThis();
+        
+        if(col.getOther().getData().getCollider().isTrigger()) {
+            if(r == null)
+                r= col.getOther();
+            else
+                r= null;
+        }
+        
+        return r;
     }
     
     public Point2D getColPosition(GameObject g) {

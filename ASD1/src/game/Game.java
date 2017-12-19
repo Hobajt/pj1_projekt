@@ -10,6 +10,7 @@ import game.data.LevelData;
 import game.data.LevelLoadingException;
 import game.data.TileData;
 import java.util.List;
+import main.FXApp;
 
 /**
  * Stores and manages all game and level related data.
@@ -19,6 +20,7 @@ public abstract class Game {
     
     private final GameLoop gameLoop;
     
+    private int enemyCount;
     private LevelData data;
     private ObjectManager objManager;
     
@@ -46,7 +48,7 @@ public abstract class Game {
     /**
      * Returns current level into its initial state (initial GameObject states)
      */
-    public abstract void resetLevel();
+    public abstract void resetLevel(boolean loadAgain);
     
     /**
      * Loads level data from local files
@@ -55,10 +57,10 @@ public abstract class Game {
      */
     public final boolean loadLevel(String id) {
         try {
-            data= new LevelData(id);
+            data= new LevelData(id, this);
             return true;
         } catch (LevelLoadingException e) {
-            System.err.println("Error during level loading: " + e.getMessage());
+            //System.err.println("Error during level loading: " + e.getMessage());
             return false;
         }
     }
@@ -100,5 +102,18 @@ public abstract class Game {
             gameLoop.stop();
         else
             gameLoop.start();
+    }
+
+    
+    public void enemyKilled() {
+        --this.enemyCount;
+        if(enemyCount <= 0) {
+            setPaused(true);
+            FXApp.inst().reset();
+        }
+    }
+    
+    public void setEnemyCount(int enemyCount) {
+        this.enemyCount = enemyCount;
     }
 }

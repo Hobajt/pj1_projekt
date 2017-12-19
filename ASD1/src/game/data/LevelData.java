@@ -5,6 +5,8 @@
  */
 package game.data;
 
+import game.Game;
+
 /**
  * Contains all data related to this level. Class is managed as 
  * a factory- loadLevel() is method for creation calls.
@@ -18,13 +20,14 @@ public class LevelData {
     /**
      * Loads new level
      * @param id LevelID to load- if <b>null</b> is passed, load the default level
+     * @param game
      * @throws LevelLoadingException Thrown when error occurs during loading
      */
-    public LevelData(String id) throws LevelLoadingException {
-        System.out.println("--Level data loading--");
-        objectData= new ObjectData(id);
+    public LevelData(String id, Game game) throws LevelLoadingException {
+        //System.out.println("--Level data loading--");
+        objectData= new ObjectData(id, game);
         tileData= new TileData(id);
-        System.out.println("--Level data loaded--");
+        //System.out.println("--Level data loaded--");
     }
 
     ObjectData getObjectData() {

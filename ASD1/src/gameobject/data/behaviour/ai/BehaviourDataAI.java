@@ -32,7 +32,7 @@ public class BehaviourDataAI implements BehaviourData {
     }
     
     public BehaviourDataAI(CombatAIType aggresivity, IdleAIData idle) {
-        this(Const.BASE_WIDTH, aggresivity, idle);
+        this(Const.BASE_WIDTH/4, aggresivity, idle);
     }
     
     public BehaviourDataAI(int detectDistance, CombatAIType aggresivity, IdleAIData idle) {

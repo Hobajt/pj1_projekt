@@ -46,8 +46,9 @@ public class FlagsFactory {
     private Map<FlagsType, ObjectFlags> initFlags() {
         Map<FlagsType, ObjectFlags> m= new HashMap<>();
         
-        m.put(FlagsType.STATIC, new ObjectFlags(false, false, false, false));
-        m.put(FlagsType.CREATURE, new ObjectFlags(true, true, false, false));
+        m.put(FlagsType.STATIC, new ObjectFlags(false, false, false));
+        m.put(FlagsType.CREATURE, new ObjectFlags(true, true, false));
+        m.put(FlagsType.PREFAB, new ObjectFlags(true, false, true));
         
         return m;
     }

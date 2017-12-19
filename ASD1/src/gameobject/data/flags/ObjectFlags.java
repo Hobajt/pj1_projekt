@@ -15,20 +15,17 @@ public class ObjectFlags implements Serializable {
     
     private final boolean dynamic;              //can move, rotate
     private final boolean damagable;            //can take damage (has to be creature)
-    private final boolean interactable;         //some action is possible (lever, doors,...)
     private final boolean behaviourAttached;    //has behaviour script attached
 
     ObjectFlags() {
         this.dynamic= 
         this.damagable= 
-        this.interactable= 
         this.behaviourAttached= false;
     }
     
-    ObjectFlags(boolean dynamic, boolean damagable, boolean interactable, boolean behaviourAttached) {
+    ObjectFlags(boolean dynamic, boolean damagable, boolean behaviourAttached) {
         this.dynamic= dynamic;
         this.damagable= damagable;
-        this.interactable= interactable;
         this.behaviourAttached= behaviourAttached;
     }
     
@@ -38,10 +35,6 @@ public class ObjectFlags implements Serializable {
 
     public boolean isDamagable() {
         return damagable;
-    }
-
-    public boolean isInteractable() {
-        return interactable;
     }
 
     public boolean hasBehaviourAttached() {

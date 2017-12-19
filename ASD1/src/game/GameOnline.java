@@ -51,7 +51,7 @@ public class GameOnline extends Game {
      * from local files (server) or makes a call to server (client).
      */
     @Override
-    public void resetLevel() {
+    public void resetLevel(boolean loadAgain) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

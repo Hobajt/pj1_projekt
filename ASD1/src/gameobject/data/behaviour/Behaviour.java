@@ -5,6 +5,8 @@
  */
 package gameobject.data.behaviour;
 
+import gameobject.GameObject;
+
 /**
  * Instance of custom behaviour with its own inner states.
  * Is attachable to GameObject
@@ -13,4 +15,6 @@ package gameobject.data.behaviour;
 public interface Behaviour {
     
     public void update();
+    
+    public void trigger(GameObject col);
 }

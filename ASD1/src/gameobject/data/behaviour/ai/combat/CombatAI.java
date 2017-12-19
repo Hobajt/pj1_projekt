@@ -16,30 +16,47 @@ import gameobject.data.behaviour.ai.AIState;
 public abstract class CombatAI {
     
     private final Creature owner;
+    private final int dDistance;
+    private final CombatAIType type;
     
     public abstract boolean inCombat();
     
     public abstract AIState update(AIState state);
 
-    public CombatAI(GameObject owner) {
+    public CombatAI(CombatAIType type, int dDistance, GameObject owner) {
         this.owner= (Creature) owner;
+        this.dDistance= dDistance;
+        this.type= type;
     }
     
     /**
      * Generates new CombatAI controller 
      * @param type Type of CombatAI to generate
+     * @param dDistance
      * @param owner
      * @return Returns new CombatAI
      */
-    public static CombatAI createNew(CombatAIType type, GameObject owner) {
+    public static CombatAI createNew(CombatAIType type, int dDistance, GameObject owner) {
         switch(type) {
             case NEUTRAL:
-                return new CombatAINeutral(owner);
+                return new CombatAINeutral(type, dDistance, owner);
             case FRIGHTENED:
-                return new CombatAIFrightened(owner);
+                return new CombatAIFrightened(type, dDistance, owner);
             case AGGRESSIVE:
-                return new CombatAIAggressive(owner);
+                return new CombatAIAggressive(type, dDistance, owner);
         }
         return null;
+    }
+
+    public Creature getOwner() {
+        return owner;
+    }
+
+    public CombatAIType getType() {
+        return type;
+    }
+
+    public int getdDistance() {
+        return dDistance;
     }
 }

@@ -64,6 +64,7 @@ public class PlayerInput {
     
     public void switchAttackType(AttackType att) {
         currentAttack= att;
+        FXApp.inst().changeWeapon(att);
     }
     
     public AttackType getAttackType() {

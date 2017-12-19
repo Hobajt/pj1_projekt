@@ -6,7 +6,10 @@
 package gameobject.data.behaviour.ai.combat;
 
 import gameobject.GameObject;
+import gameobject.combat.AttackType;
 import gameobject.data.behaviour.ai.AIState;
+import gameobject.player.Player;
+import javafx.geometry.Point2D;
 
 /**
  *
@@ -16,19 +19,21 @@ public class CombatAIAggressive extends CombatAI {
     
     @Override
     public AIState update(AIState state) {
-        return AIState.IDLE;
         
         //determine the distance
+        double dist= Player.inst().getObject().distance(getOwner());
+        if(dist > getdDistance()) {
+            return AIState.IDLE;
+        }
+        state= AIState.COMBAT;
         
-        //generally- melee will be stronger than ranged
-        
-        //if has any ranged attack
-            //attack ranged until youre in melee range
-            //attack melee otherwise
-        
-        //else if melee
-            //move closer if not close enough
-            //spam attacks (cycle em)
+        if(dist > 40) {
+            state.setMoveDir(moveTowardsPlayer());
+        }
+        else if (getOwner().canAttack(AttackType.MELEE)) {
+            getOwner().attack(AttackType.MELEE);
+        }
+        return state;
     }
 
     @Override
@@ -36,7 +41,11 @@ public class CombatAIAggressive extends CombatAI {
         return false;
     }
 
-    public CombatAIAggressive(GameObject owner) {
-        super(owner);
+    public CombatAIAggressive(CombatAIType type, int dDistance, GameObject owner) {
+        super(type, dDistance, owner);
+    }
+    
+    private Point2D moveTowardsPlayer() {
+        return Player.inst().getObject().getTransform().getPosition().subtract(getOwner().getTransform().getPosition()).normalize();
     }
 }

@@ -7,6 +7,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
+import main.FXApp;
 
 /**
  * Offline implementation. Contains level related data and 
@@ -39,16 +40,24 @@ public class GameOffline extends Game {
      * Initial state is loaded from local files.
      */
     @Override
-    public final void resetLevel() {
+    public final void resetLevel(boolean loadAgain) {
+        if(loadAgain) {
+            if(!loadLevel(null)) {
+                FXApp.inst().quit();
+            }
+            getGameLoop().start();
+        }
+        
         getObjManager().reset();
-        System.out.println("--Level Restarted--");
+        getGameLoop().getView().reset(loadAgain);
+        //System.out.println("--Level Restarted--");
     }
     
     public GameOffline(String levelID) throws GameException {
         super(levelID);
         uIDCounter= 1;
         gameUpdate= new GameUpdateGenerator();
-        resetLevel();
+        resetLevel(false);
         getGameLoop().start();
     }
     
