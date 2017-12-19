@@ -13,6 +13,7 @@ import game.menu.GameMenu;
 import game.menu.MainMenu;
 import game.menu.Menu;
 import gameobject.GameObject;
+import gameobject.PrintController;
 import gameobject.combat.AttackType;
 import gameobject.data.ObjectDataFactory;
 import gameobject.model.ModelFactory;
@@ -42,9 +43,9 @@ public class FXApp extends Application {
     
     private void TMP_saveAll() {
         //TileData.saveData();
-        ObjectDataFactory.inst().SaveDataBulk();
-        ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN, ObjectState.MELEE, ObjectState.RANGED));
-        ModelFactory.SaveModelStates("1", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
+        //ObjectDataFactory.inst().SaveDataBulk();
+        //ModelFactory.SaveModelStates("0", Arrays.asList(ObjectState.IDLE, ObjectState.RUN, ObjectState.MELEE, ObjectState.RANGED));
+        //ModelFactory.SaveModelStates("1", Arrays.asList(ObjectState.IDLE, ObjectState.RUN));
     }
     
     @Override
@@ -74,7 +75,7 @@ public class FXApp extends Application {
      * Returns the game to its initial state.
      */
     public void reset() {
-        
+        PrintController.inst().clear();
         //create and show main menu (Play, Quit- later mb even options)
         activeMenu= new MainMenu(this::startGameOffline, this::quit);
         activeMenu.show();

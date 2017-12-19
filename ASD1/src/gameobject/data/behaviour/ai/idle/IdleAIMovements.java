@@ -34,8 +34,10 @@ public class IdleAIMovements extends IdleAI {
     public AIState update(AIState state) {
         
         //no movement if AI is not in idle state
-        if(state != AIState.IDLE)
+        if(state != AIState.IDLE) {
+            pivot= getOwner().getTransform().getPosition();
             return state;
+        }
         
         Random rd= new Random();
         Point2D currPos= getOwner().getTransform().getPosition();

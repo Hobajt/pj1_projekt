@@ -6,6 +6,7 @@
 package game.menu;
 
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import main.Window;
@@ -58,6 +59,8 @@ class MenuButton {
         this.ySize= ySize;
         this.xPos= xPos;
         this.yPos= yPos;
+        
+        
         
         onResize();
     }

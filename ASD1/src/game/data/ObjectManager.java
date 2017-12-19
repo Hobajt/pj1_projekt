@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.geometry.Point2D;
+import main.FXApp;
 
 /**
  * Manages instances of GameObjects present on the current level
@@ -46,6 +47,11 @@ public class ObjectManager {
     }
     
     public void destroy(GameObject go) {
+        if(go == Player.inst().getObject()) {
+            game.setPaused(true);
+            FXApp.inst().reset();
+        }
+        
         game.getGameLoop().getView().remove(go);
         CollisionEngine.inst().remove(go);
         objs.remove(go);

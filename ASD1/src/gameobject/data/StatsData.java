@@ -25,6 +25,10 @@ public class StatsData implements Serializable {
         this(new CombatData());
     }
     
+    public StatsData(int health) {
+        this(health, Const.BASE_MS, new CombatData());
+    }
+    
     public StatsData(CombatData cmb) {
         this(Const.BASE_HEALTH, Const.BASE_MS, cmb);
     }

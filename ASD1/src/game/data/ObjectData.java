@@ -59,7 +59,7 @@ class ObjectData {
         
         Random r= new Random();
         List<Transform> spawn = new ArrayList<>();
-        int enemyCount= r.nextInt(5)+5;
+        int enemyCount= r.nextInt(10)+10;
         for(int i= 0; i < enemyCount; i++) {
             spawn.add(new Transform(randomPoint(r, -500, 500, -270, 270)));
         }

@@ -17,6 +17,13 @@ public class PrintController {
     
     private final List<PrintMessage> messages;
     
+    public void clear() {
+        for(int i= messages.size()-1; i >= 0; i--) {
+            messages.get(i).remove();
+        }
+        messages.clear();
+    }
+    
     public void update(Point2D center) {
         for(int i= messages.size()-1; i >= 0; i--) {
             if(messages.get(i).update(center)) {

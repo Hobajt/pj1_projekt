@@ -97,14 +97,14 @@ public class ObjectDataFactory {
                 ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(0), 
                         ColliderType.CREATURE, new Point2D(0,
                             -ModelFactory.inst().getModel(0).getSizeOffset().getY()*(0.95-Const.IMG_CREATURE_SCALE)),
-                        false), new StatsData());
+                        false), new StatsData(350));
         
         saveDataHelper(1, "Creature 1", FlagsType.CREATURE, 0, 
                 ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(0),
                          ColliderType.CREATURE, new Point2D(0,
                             -ModelFactory.inst().getModel(0).getSizeOffset().getY()*(0.95-Const.IMG_CREATURE_SCALE)),
                         false), new StatsData(), 
-                        new BehaviourDataAI(125, CombatAIType.AGGRESSIVE, new IdleAIData(0.1f, 45)));
+                        new BehaviourDataAI(150, CombatAIType.AGGRESSIVE, new IdleAIData(0.1f, 45)));
         
         saveDataHelper(2, "Creature 2", FlagsType.CREATURE, 0, 
                 ColliderBuilder.inst().buildNew(ModelFactory.inst().getModel(2),
